@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "325679731114",
+    "firebase_url": "https://instantattenddb.firebaseio.com",
+    "project_id": "instantattenddb",
+    "storage_bucket": "instantattenddb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:325679731114:android:86479637617641f1abdbd3",
+        "android_client_info": {
+          "package_name": "com.example.instantattendance"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "325679731114-v7t3cj2cblcu5pdqdjhdun10ibfeasg6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBhnb_hNqBSIlza_2vdfFijcmza_N5G_NQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "325679731114-v7t3cj2cblcu5pdqdjhdun10ibfeasg6.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
