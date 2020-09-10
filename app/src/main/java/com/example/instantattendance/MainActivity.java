@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
         }
-        //Toast.makeText(this, uAuth.toString(), Toast.LENGTH_LONG).show();
+        Toast.makeText(this, uAuth.toString(), Toast.LENGTH_LONG).show();
         //checkLogInState(uAuth);
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -65,10 +65,14 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+         if (id == R.id.signout) {
+            uAuth.signOut();
+             Toast.makeText(this,"signed out", Toast.LENGTH_LONG).show();
+             Intent intent = new Intent(this, signIn.class);
+             startActivity(intent);
+             finish();
         }
 
-        return super.onOptionsItemSelected(item);
+        return true;
     }
 }
