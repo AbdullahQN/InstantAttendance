@@ -6,6 +6,7 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -23,8 +24,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
         try {
             uAuth = FirebaseAuth.getInstance();
+            FirebaseUser currentUser = uAuth.getCurrentUser();
+            if(currentUser==null){
+                Toast.makeText(this,"signed out", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(this, signIn.class);
+                startActivity(intent);
+            }
         }catch (Exception e){
             Toast.makeText(this,"signed out", Toast.LENGTH_LONG).show();
             Intent intent = new Intent(this, signIn.class);
