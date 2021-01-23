@@ -29,15 +29,13 @@ public class MainActivity extends AppCompatActivity {
             uAuth = FirebaseAuth.getInstance();
             FirebaseUser currentUser = uAuth.getCurrentUser();
             if(currentUser==null){
-                Toast.makeText(this,"signed out", Toast.LENGTH_LONG).show();
+                Toast.makeText(this,"no user logged in", Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(this, signIn.class);
                 startActivity(intent);
             }
         }catch (Exception e){
-            Toast.makeText(this,"signed out", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(this, signIn.class);
-            startActivity(intent);
-            finish();
+            Toast.makeText(this,"connection lost", Toast.LENGTH_LONG).show();
+
         }
         Toast.makeText(this, uAuth.toString(), Toast.LENGTH_LONG).show();
         //checkLogInState(uAuth);
