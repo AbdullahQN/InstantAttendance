@@ -9,7 +9,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".signIn"></activity>
+        <activity
+            android:name=".MLActivity"
+            android:label="@string/title_activity_m_l"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".signIn" />
         <activity
             android:name=".ui.login.sign_in"
             android:label="@string/title_activity_sign_in" />
