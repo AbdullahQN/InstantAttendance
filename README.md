@@ -16,6 +16,7 @@ Todo:
 - [ ] Take Attendance Activity.
 - [ ] TensorFlowLight integration.
 - [ ] exporting to Excel.
+- [ ] contact belcasm
 
 
 
