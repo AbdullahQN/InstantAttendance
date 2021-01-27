@@ -30,8 +30,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         // Check for the signed in user
+        uAuth = FirebaseAuth.getInstance();
+        userCheck(uAuth);
+    }
+
+    private void userCheck(FirebaseAuth uAuth){
         try {
-            uAuth = FirebaseAuth.getInstance();
             FirebaseUser currentUser = uAuth.getCurrentUser();
             if(currentUser==null){
                 //no user is logged in move to login activity
@@ -42,13 +46,15 @@ public class MainActivity extends AppCompatActivity {
                 // figure out what type of a user is logged in
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
                 String forignkey = uAuth.getUid();
-                DocumentReference refrenceFK = db.collection("Users").document(forignkey);
+                DocumentReference refrenceFK;
+                refrenceFK = db.collection("Users").document(forignkey);
                 refrenceFK.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>(){
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task){
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
+                                System.out.println("Hey it exists!");
 
                             }
                         }
