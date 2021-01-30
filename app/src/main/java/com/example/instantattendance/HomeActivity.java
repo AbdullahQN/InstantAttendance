@@ -24,6 +24,7 @@ import java.util.Arrays;
 
 public class HomeActivity extends AppCompatActivity {
     private FirebaseAuth uAuth;
+    public Users u;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,6 +34,7 @@ public class HomeActivity extends AppCompatActivity {
         uAuth = FirebaseAuth.getInstance();
         final FirebaseUser user = uAuth.getCurrentUser();
         Intent intent = getIntent();
+        u = (Users) intent.getSerializableExtra("u");
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -41,15 +43,20 @@ public class HomeActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+
+        //view sections
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.CourseRecycler);
 // set a LinearLayoutManager with default vertical orientaion
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
         recyclerView.setLayoutManager(linearLayoutManager); // set LayoutManager to RecyclerView
 // call the constructor of CustomAdapter to send the reference and data to Adapter
-        ArrayList personNames = new ArrayList<>(Arrays.asList("Person 1", "Person 2", "Person 3", "Person 4", "Person 5", "Person 6", "Person 7","Person 8", "Person 9", "Person 10", "Person 11", "Person 12", "Person 13", "Person 14"));
+
+
+        ArrayList s = new ArrayList<>(u.Sections);
         //ArrayList personImages = new ArrayList<>(Arrays.asList(R.drawable.person1, R.drawable.person2, R.drawable.person3, R.drawable.person4, R.drawable.person5, R.drawable.person6, R.drawable.person7,R.drawable.person1, R.drawable.person2, R.drawable.person3, R.drawable.person4, R.drawable.person5, R.drawable.person6, R.drawable.person7));
 
-        CourseAdapter customAdapter = new CourseAdapter(HomeActivity.this, personNames);
+        CourseAdapter customAdapter = new CourseAdapter(HomeActivity.this, s);
         recyclerView.setAdapter(customAdapter); // set the Adapter to RecyclerView
     }
     @Override

@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
     private FirebaseAuth uAuth;
+    public Users u;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +36,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void userCheck(FirebaseAuth uAuth){
-        try {
             FirebaseUser currentUser = uAuth.getCurrentUser();
             if(currentUser==null){
                 //no user is logged in move to login activity
@@ -44,30 +44,52 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }else{
                 // figure out what type of a user is logged in
+                FirebaseAuth xAuth = FirebaseAuth.getInstance();
                 FirebaseFirestore db = FirebaseFirestore.getInstance();
-                String forignkey = uAuth.getUid();
-                DocumentReference refrenceFK;
-                refrenceFK = db.collection("Users").document(forignkey);
-                refrenceFK.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>(){
+                String forignkey = xAuth.getUid();
+                DocumentReference refrenceFK = db.collection("Users").document(forignkey);
+                refrenceFK.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                        if (task.isSuccessful()) {
+                            DocumentSnapshot document = task.getResult();
+                            if (document.exists()) {
+                                u = document.toObject(Users.class);
+                                System.out.println("Hey it exists!");
+                                Toast.makeText(getApplicationContext(), u.FName, Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                intent.putExtra("u", u);
+                                startActivity(intent);
+                                          /*  startActivity(intent);
+                                            finish();*/
+                            }
+                        } else {
+                            ///task is not succsesful
+
+                        }
+                    }
+                });
+
+
+                /*refrenceFK.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>(){
                     @Override
                     public void onComplete(@NonNull Task<DocumentSnapshot> task){
                         if (task.isSuccessful()) {
                             DocumentSnapshot document = task.getResult();
                             if (document.exists()) {
                                 System.out.println("Hey it exists!");
+                                Toast.makeText(getApplicationContext(), document.get("FName").toString(), Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
+                                startActivity(intent);
 
                             }
+                        } else {
+                            System.out.println("Task failed here 0");
                         }
                     }
-                });
-                Intent intent = new Intent(this, HomeActivity.class);
-                startActivity(intent);
-                Toast.makeText(this, uAuth.getCurrentUser().getEmail().toString()+" is signed in", Toast.LENGTH_LONG).show();
+                });*/
+                //Toast.makeText(this, uAuth.getCurrentUser().getEmail().toString()+" is signed in", Toast.LENGTH_LONG).show();
             }
-        }catch (Exception e){
-            Toast.makeText(this,"connection lost", Toast.LENGTH_LONG).show();
-
-        }
     }
 
 }
