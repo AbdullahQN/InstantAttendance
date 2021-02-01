@@ -54,14 +54,14 @@
             android:lineSpacingExtra="8dp"
             android:text="expanded_supporting"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-            app:layout_constraintBottom_toTopOf="@+id/action_button_1"
+            app:layout_constraintBottom_toTopOf="@+id/take_attendance"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/course_code" />
 
         <Button
-            android:id="@+id/action_button_1"
+            android:id="@+id/take_attendance"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -76,14 +76,14 @@
             app:layout_constraintTop_toBottomOf="@+id/course_name" />
 
         <Button
-            android:id="@+id/action_button_2"
+            android:id="@+id/view_history"
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:text="History"
-            app:layout_constraintStart_toEndOf="@+id/action_button_1"
-            app:layout_constraintTop_toTopOf="@+id/action_button_1" />
+            app:layout_constraintStart_toEndOf="@+id/take_attendance"
+            app:layout_constraintTop_toTopOf="@+id/take_attendance" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
