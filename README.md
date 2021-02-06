@@ -8,17 +8,17 @@ WEEK 0:
 - [x] Github setup for project synchronization between members.
 > To get the advantages of version control systems and social distancing preventing a physical development meeting.
 - [x] Login design and implementation connected to our project database.
-> When launching the program (MainActivity class invoked), leading to check whether:
-There is an active logged in user: The system would greet the user with the home interface. 
-There is no active logged in user: The system would greet the user with a login interface.
+> When launching the program (MainActivity class invoked), leading to check whether: 1. There is an active logged in user: The system would greet the user with the home interface. 2. There is no active logged in user: The system would greet the user with a login interface.
 see more at: [Firebase Authentication](https://firebase.google.com/docs/auth)
 
 WEEK 1:
 - [x] Getting user courses information from the database and display it in the Home interface.
-> The first class to be invoked (MainActivity class) now acts as a loading screen performing different queries to the project database to get essential data about the user and sections, this data is needed for different classes.
+> The first class to be invoked (MainActivity class) now acts as a loading screen performing different queries to the project database to get data about the user and sections, this is essential for upcoming functionalities.
 see more at: [Get data with Cloud Firestore](https://firebase.google.com/docs/firestore/query-data/get-data)
 - [x] initial workflow skeleton between Interfaces.
-
+> Deciding class hierarchies and objectives.
+> 1. MainActivity class 
+> 2. HomeActivity class: 
 WEEK 2:
 - [x] Home interface GUI design and implementation.
 - [x] Integrating Android CameraX library into the project.
