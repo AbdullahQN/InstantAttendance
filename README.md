@@ -24,7 +24,7 @@ Todo:
 - [ ] Taking attendance functionality.
 - [ ] TensorFlowLight integration of MTCNN and Facenet in different scenarios:
 
-	| ML | Solution 1 | Solution 2 |
+| ML | Solution1 | Solution2 |
 | --- | --- | --- |
 | MTCNN | On device integration | Cloud integration |
 | FaceNet | On device integration | On device integration |
