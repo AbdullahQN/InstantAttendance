@@ -23,7 +23,7 @@ Todo:
 - [ ] Home interface (The ability to view attendance history for a particular section).
 - [ ] Taking attendance functionality.
 - [ ] TensorFlowLight integration of MTCNN and Facenet in different scenarios:
-	| ML | Solution 1 | Solution 2 
+	| ML | Solution 1 | Solution 2 |
 | ----------- | ----------- | ----------- |
 | MTCNN | On device integration | Cloud integration |
 | FaceNet | On device integration | On device integration |
