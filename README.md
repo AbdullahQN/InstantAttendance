@@ -46,7 +46,7 @@ see more at: [Create dynamic lists with RecyclerView](https://developer.android.
 WEEK 3:
 - [ ] Integrating Android CameraX library into the project.
 - [ ] Design and implementation of a Camera Preview Interface.
-- [ ] Preview the taking picture.
+- [ ] Preview the taken picture.
 
 Todo:
 - [ ] Home interface (The ability to view attendance history for a particular section).
