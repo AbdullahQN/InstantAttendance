@@ -22,8 +22,9 @@ see more at: [Get data with Cloud Firestore](https://firebase.google.com/docs/fi
 
 - [x] initial workflow skeleton between Interfaces.
 > Deciding class hierarchies and objectives.
+
 | Interface | Objective | Progress |
-| :---: | :---: | :---: |
+| --- | --- | --- |
 | MainActivity class | Loading user data | Ongoing |
 | HomeActivity class | Users main interface with the system | Ongoing |
 
