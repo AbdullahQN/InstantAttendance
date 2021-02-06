@@ -25,9 +25,8 @@ Todo:
 - [ ] TensorFlowLight integration of MTCNN and Facenet in different scenarios:
 
 	| ML | Solution 1 | Solution 2 |
-| :----: | :----: | :----: |
+| --- | --- | --- |
 | MTCNN | On device integration | Cloud integration |
 | FaceNet | On device integration | On device integration |
-
 
 
