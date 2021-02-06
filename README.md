@@ -27,7 +27,6 @@ see more at: [Get data with Cloud Firestore](https://firebase.google.com/docs/fi
 | --- | --- | --- |
 | MainActivity class | Loading user data | Ongoing |
 | HomeActivity class | Users main interface with the system | Ongoing |
-
 | CameraActivity class | Interface with device camera | Ongoing |
 | PictureView class | Preview the taken picture | Ongoing |
 | SignIn class | Authenticating user with the project database | Concluded |
