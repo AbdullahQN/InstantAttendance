@@ -35,18 +35,25 @@ see more at: [Get data with Cloud Firestore](https://firebase.google.com/docs/fi
 | Section class | Object-oriented class containing sections data | Concluded |
 
 WEEK 2:
+- [x] Implementation of android permissions request.
+ > Request Camera, Storage read, and Storage write permissions at the first run of the program only, or when those permissions are changed later by the user.
+ see more at: [Request app permissions](https://developer.android.com/training/permissions/requesting) .
+ 
 - [x] Home interface GUI design and implementation.
-- [x] Integrating Android CameraX library into the project.
-- [x] Design and implementation of a Camera Preview Interface.
+> Implementing a dynamic list with RecyclerView, to View the user's registered sections in cards.
+see more at: [Create dynamic lists with RecyclerView](https://developer.android.com/guide/topics/ui/layout/recyclerview) .
 
 WEEK 3:
+- [ ] Integrating Android CameraX library into the project.
+- [ ] Design and implementation of a Camera Preview Interface.
+- [ ] Preview the taking picture.
 
 Todo:
 - [ ] Home interface (The ability to view attendance history for a particular section).
 - [ ] Taking attendance functionality.
 - [ ] TensorFlowLight integration of MTCNN and Facenet in different scenarios:
 
-| ML | Solution1 | Solution2 |
+| ML | Solution 1 | Solution 2 |
 | --- | --- | --- |
 | MTCNN | On device integration | Cloud integration |
 | FaceNet | On device integration | On device integration |
