@@ -40,8 +40,8 @@ WEEK 2:
  see more at: [Request app permissions](https://developer.android.com/training/permissions/requesting) .
  
 - [x] Home interface GUI design and implementation.
-> Implementing a dynamic list with RecyclerView, to View the user's registered sections in cards.
-see more at: [Create dynamic lists with RecyclerView](https://developer.android.com/guide/topics/ui/layout/recyclerview) .
+> 1. Implementing a dynamic list with RecyclerView, to View the user's registered sections in cards. see more at: [Create dynamic lists with RecyclerView](https://developer.android.com/guide/topics/ui/layout/recyclerview) .
+> 2. Taking the attendance button for selected Course card. 
 
 WEEK 3:
 - [ ] Integrating Android CameraX library into the project.
