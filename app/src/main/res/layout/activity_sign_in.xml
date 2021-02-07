@@ -4,14 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".signIn">
+    tools:context=".SignIn">
 
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-
 
         android:layout_marginTop="80dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -32,23 +31,25 @@
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signInPass"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/signInPass" />
 
     <EditText
         android:id="@+id/signInPass"
-        android:layout_width="363dp"
-        android:layout_height="59dp"
+
+        android:radius="5dp"
+        android:layout_width="359dp"
+        android:layout_height="62dp"
         android:layout_marginTop="44dp"
         android:background="@drawable/blue_border_rounded_cornwe"
         android:backgroundTint="@color/colorPrimary"
         android:ems="10"
         android:hint="Enter your password"
+        android:textColor="@color/white"
         android:inputType="textPassword"
         android:textColorHint="@color/icActive"
         android:textSize="20sp"
+        android:maxLines="1"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -57,6 +58,8 @@
 
     <EditText
         android:id="@+id/signInEmail"
+
+        android:radius="5dp"
         android:layout_width="359dp"
         android:layout_height="62dp"
         android:layout_marginTop="72dp"
@@ -69,6 +72,7 @@
         android:maxLines="1"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
+        android:textColor="@color/white"
         android:textColorHint="@color/icActive"
         android:textCursorDrawable="@drawable/cursor_color"
         android:textSize="20sp"

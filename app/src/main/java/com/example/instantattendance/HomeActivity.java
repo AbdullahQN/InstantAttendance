@@ -127,7 +127,7 @@ public class HomeActivity extends AppCompatActivity {
         if (id == R.id.signout) {
             FirebaseAuth.getInstance().signOut();
             Toast.makeText(this, "signed out", Toast.LENGTH_LONG).show();
-            Intent intent = new Intent(this, signIn.class);
+            Intent intent = new Intent(this, SignIn.class);
             startActivity(intent);
             finish();
         }

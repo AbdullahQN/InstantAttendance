@@ -20,7 +20,7 @@
     <string name="login_failed">"Login failed"</string>
     <string name="title_activity_m_l">MLActivity</string>
     <string name="title_activity_login">LoginActivity</string>
-    <string name="title_activity_home">HomeActivity</string>
+    <string name="title_activity_home">Instant Attendance</string>
     <string name="capture_button_alt">Capture</string>
     <string name="switch_camera_button_alt">Switch camera</string>
     <string name="gallery_button_alt">Gallery</string>

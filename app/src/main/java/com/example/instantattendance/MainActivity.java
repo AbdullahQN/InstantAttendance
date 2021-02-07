@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
             if(currentUser==null){
                 //no user is logged in move to login activity
                 Toast.makeText(this,"no user logged in", Toast.LENGTH_LONG).show();
-                Intent intent = new Intent(this, signIn.class);
+                Intent intent = new Intent(this, SignIn.class);
                 startActivity(intent);
             }else{
                 // figure out what type of a user is logged in

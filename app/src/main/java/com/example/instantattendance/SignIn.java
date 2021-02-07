@@ -14,7 +14,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class signIn extends AppCompatActivity {
+public class SignIn extends AppCompatActivity {
     private EditText mail;
     private EditText pass;
     private Button login;
@@ -43,13 +43,13 @@ public class signIn extends AppCompatActivity {
                 //Toast.makeText(signIn.this, password, Toast.LENGTH_LONG).show();
                 //is mail empty
                 if (!(email.matches("[a-zA-Z0-9._-]+@[a-z]+.[a-z]+"))&&!(email.matches("[a-zA-Z0-9._-]+@[a-z]+.[a-z]+.[a-z]+"))) {
-                    Toast.makeText(signIn.this, "الرجاء كتابة الايميل", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignIn.this, "الرجاء كتابة الايميل", Toast.LENGTH_LONG).show();
                     return;
                 }
 
                 //is pass empty
                 if (password.length() < 6) {
-                    Toast.makeText(signIn.this, "Password should be at least 6 characters long.", Toast.LENGTH_LONG).show();
+                    Toast.makeText(SignIn.this, "Password should be at least 6 characters long.", Toast.LENGTH_LONG).show();
                     return;
                 }
 
@@ -65,7 +65,7 @@ public class signIn extends AppCompatActivity {
 
             uAuth = FirebaseAuth.getInstance();
         uAuth.signInWithEmailAndPassword(e, s)
-                .addOnCompleteListener(signIn.this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(SignIn.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         // If sign in fails, display a message to the user. If sign in succeeds
@@ -73,7 +73,7 @@ public class signIn extends AppCompatActivity {
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
                             // there was an error
-                            Toast.makeText(signIn.this, "Email or Password invalid", Toast.LENGTH_LONG).show();
+                            Toast.makeText(SignIn.this, "Email or Password invalid", Toast.LENGTH_LONG).show();
                             logi();
                                     /*if (true) {
                                         //password.length() < 6
@@ -82,9 +82,9 @@ public class signIn extends AppCompatActivity {
                                         //Toast.makeText(this, "الرجاء كتابة pass", Toast.LENGTH_LONG).show();
                                     }*/
                         } else {
-                            Intent intent = new Intent(signIn.this, MainActivity.class);
+                            Intent intent = new Intent(SignIn.this, MainActivity.class);
                             startActivity(intent);
-                            Toast.makeText(signIn.this, "going to main sucsses", Toast.LENGTH_LONG).show();
+                            Toast.makeText(SignIn.this, "going to main sucsses", Toast.LENGTH_LONG).show();
                             finish();
                                     /*if (uAuth.getCurrentUser().isEmailVerified()) {
                                         //go to mainActivity clas

@@ -6,6 +6,7 @@
     <color name="icActive">#FFFFFFFF</color>
     <color name="icFocused">#DDFFFFFF</color>
     <color name="icPressed">#AAFFFFFF</color>
+    <color name="white">#FFFFFF</color>>
 
     <color name="tb_media_picker_accent">#AAFFFFFF</color>
     <color name="light_blue_600">#FF039BE5</color>

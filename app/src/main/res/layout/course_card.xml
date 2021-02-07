@@ -2,28 +2,30 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="170dp"
+    android:layout_height="180dp"
     android:background="@color/colorPrimary"
     app:cardCornerRadius="5dp"
     app:cardElevation="2dp"
-    android:layout_marginTop="7dp"
-    android:layout_marginStart="7dp"
-    android:layout_marginEnd="7dp">
+    android:layout_marginTop="15dp"
+    android:layout_marginStart="5dp"
+    android:layout_marginEnd="5dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="387dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/colorPrimary"
-        android:clickable="true">
+        android:clickable="true"
+        >
 
         <TextView
             android:id="@+id/section_no"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="22dp"
             android:layout_marginEnd="16dp"
             android:text="primary"
+            android:textColor="@color/white"
             android:textAppearance="@style/TextAppearance.AppCompat.Headline"
             app:layout_constraintBottom_toTopOf="@+id/course_code"
             app:layout_constraintEnd_toEndOf="parent"
@@ -39,6 +41,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:text="subtext"
+            android:textColor="@color/white"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             app:layout_constraintBottom_toTopOf="@+id/course_name"
             app:layout_constraintEnd_toEndOf="parent"
@@ -48,6 +51,7 @@
         <TextView
             android:id="@+id/course_name"
             android:layout_width="0dp"
+            android:textColor="@color/white"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
@@ -66,12 +70,14 @@
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginStart="32dp"
+
             android:layout_marginTop="16dp"
             android:minWidth="0dp"
             android:paddingStart="8dp"
             android:paddingEnd="8dp"
             android:text="Take Attendance"
+            android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/course_name" />
@@ -81,8 +87,11 @@
             style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
+            android:layout_marginEnd="32dp"
+
             android:text="History"
+            android:textColor="@color/white"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/take_attendance"
             app:layout_constraintTop_toTopOf="@+id/take_attendance" />
 
