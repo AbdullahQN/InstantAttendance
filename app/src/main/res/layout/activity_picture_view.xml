@@ -6,11 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".PictureView">
+
     <ImageView
         android:id="@+id/image_preview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"></ImageView>
 
@@ -40,4 +42,62 @@
         app:srcCompat="@drawable/ic_done" />
 
 
-  </androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- This is for debugging Only-->
+
+    <ImageView
+        android:id="@+id/face_preview0"
+        android:layout_width="168dp"
+        android:layout_height="171dp"
+        android:layout_marginTop="36dp"
+        android:rotation="90"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></ImageView>
+
+    <ImageView
+        android:id="@+id/face_preview1"
+        android:layout_width="168dp"
+        android:layout_height="171dp"
+        android:layout_marginTop="36dp"
+        android:rotation="90"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/face_preview0"
+        app:layout_constraintTop_toTopOf="parent"></ImageView>
+
+    <ImageView
+        android:id="@+id/face_preview2"
+        android:layout_width="168dp"
+        android:layout_height="171dp"
+        android:rotation="90"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/face_preview0"></ImageView>
+
+    <ImageView
+        android:id="@+id/face_preview3"
+        android:layout_width="168dp"
+        android:layout_height="171dp"
+        android:rotation="90"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/face_preview2"
+        app:layout_constraintTop_toBottomOf="@+id/face_preview1"></ImageView>
+
+    <ImageView
+        android:id="@+id/face_preview4"
+        android:layout_width="168dp"
+        android:layout_height="171dp"
+        android:rotation="90"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/face_preview2"></ImageView>
+
+    <ImageView
+        android:id="@+id/face_preview5"
+        android:layout_width="168dp"
+        android:layout_height="171dp"
+        android:rotation="90"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/face_preview4"
+        app:layout_constraintTop_toBottomOf="@+id/face_preview3"></ImageView>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
