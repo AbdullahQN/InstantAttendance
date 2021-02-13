@@ -27,8 +27,8 @@ see more at: [Get data with Cloud Firestore](https://firebase.google.com/docs/fi
 | --- | --- | --- |
 | MainActivity class | Loading user data | Ongoing |
 | HomeActivity class | Users main interface with the system | Ongoing |
-| CameraActivity class | Interface with device camera | Ongoing |
-| PictureView class | Preview the taken picture | Ongoing |
+| CameraActivity class | Interface with device camera | Concluded |
+| PictureView class | Preview the taken picture | Concluded |
 | SignIn class | Authenticating user with the project database | Concluded |
 | CourseAdapter class | Helper class to propagate Section card in HomeActivity class | Concluded |
 | User class | Object-oriented class containing user data | Concluded |
@@ -44,9 +44,15 @@ WEEK 3:
 > 2. Taking the attendance button for selected Course card. 
 
 WEEK 4:
-- [ ] Integrating Android CameraX library into the project.
-- [ ] Design and implementation of a Camera Preview Interface.
-- [ ] Preview the taken picture.
+- [x] Integrating Android CameraX library into the project.
+> Due to vast amounts of Camera devices in android enviroment, Google has provided a sulotion for implementing a custom made camera interface through the library CameraX.
+> see more at: [CameraX overview](https://developer.android.com/training/camerax) .
+
+- [x] Design and implementation of a Camera Preview Interface.
+> Through CameraX we have built a live preview of the camera with the ability to take picture and save them to storage.
+
+- [x] Preview the taken picture.
+> Read the taken picture from storage and view it, with the option to start taking the attendance.
 
 Todo:
 - [ ] Home interface (The ability to view attendance history for a particular section).
