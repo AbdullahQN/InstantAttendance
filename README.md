@@ -49,10 +49,12 @@ WEEK 4:
 > see more at: [CameraX overview](https://developer.android.com/training/camerax) .
 
 - [x] Design and implementation of a Camera Preview Interface.
-> Through CameraX we have built a live preview of the camera with the ability to take picture and save them to storage.
+> Through CameraX we have built a live preview of the camera with the ability to take picture and save them to storage (implemented in CameraActivity class).
+> see more at: [Implement a preview](https://developer.android.com/training/camerax/preview), [Image capture](https://developer.android.com/training/camerax/take-photo) .
 
 - [x] Preview the taken picture.
-> Read the taken picture from storage and view it, with the option to start taking the attendance.
+> Read the taken picture from storage and view it, with the option to start taking the attendance (implemented in PictureView class).
+> see more at: [Analyze images](https://developer.android.com/training/camerax/analyze).
 
 Todo:
 - [ ] Home interface (The ability to view attendance history for a particular section).
