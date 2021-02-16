@@ -1,10 +1,10 @@
-/*
+package com.example.instantattendance.mtcnn;
 
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.Point;
 
-//import com.zwp.mobilefacenet.MyUtil;
+import com.example.instantattendance.mobilefacenet.MyUtil;
 
 import org.tensorflow.lite.Interpreter;
 
@@ -13,13 +13,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Vector;
 
-*/
 /**
  * MTCNN for Android.
- *//*
-
+ */
 public class MTCNN {
-    // 参数
+
     private float factor = 0.709f;
     private float pNetThreshold = 0.6f;
     private float rNetThreshold = 0.7f;
@@ -41,13 +39,12 @@ public class MTCNN {
         oInterpreter = new Interpreter(MyUtil.loadModelFile(assetManager, MODEL_FILE_ONET), options);
     }
 
-    */
-/**
-     * 人脸检测
-     * @param bitmap 要处理的图片
-     * @param minFaceSize 最小的人脸像素值. (此值越大，检测越快)
-     *//*
-
+    /**
+     * Face Detection
+     * @param bitmap Picture to be processed
+     * @param minFaceSize
+     * The smallest face pixel value. (The larger the value, the faster the detection)
+     */
     public Vector<Box> detectFaces(Bitmap bitmap, int minFaceSize) {
         Vector<Box> boxes;
         try {
@@ -76,8 +73,7 @@ public class MTCNN {
         }
     }
 
-    */
-/**
+    /**
      * NMS执行完后，才执行Regression
      * (1) For each scale , use NMS with threshold=0.5
      * (2) For all candidates , use NMS with threshold=0.7
@@ -86,11 +82,12 @@ public class MTCNN {
      *
      * @param bitmap
      * @return
-     *//*
-
+     */
     private Vector<Box> pNet(Bitmap bitmap, int minSize) {
         int whMin = Math.min(bitmap.getWidth(), bitmap.getHeight());
-        float currentFaceSize = minSize; // currentFaceSize=minSize/(factor^k) k=0,1,2... until excced whMin
+
+        // currentFaceSize=minSize/(factor^k) k=0,1,2... until exceed whMin
+        float currentFaceSize = minSize;
         Vector<Box> totalBoxes = new Vector<>();
         //【1】Image Paramid and Feed to Pnet
         while (currentFaceSize <= whMin) {
@@ -135,16 +132,14 @@ public class MTCNN {
         return updateBoxes(totalBoxes);
     }
 
-    */
-/**
+    /**
      * pnet前向传播
      *
      * @param bitmap
      * @param prob1
      * @param conv4_2_BiasAdd
      * @return
-     *//*
-
+     */
     private void pNetForward(Bitmap bitmap, float[][][][] prob1, float[][][][] conv4_2_BiasAdd) {
         float[][][] img = MyUtil.normalizeImage(bitmap);
         float[][][][] pNetIn = new float[1][][][];
@@ -187,22 +182,21 @@ public class MTCNN {
         return 0;
     }
 
-    */
-/**
+    /**
      * nms，不符合条件的deleted设置为true
      *
      * @param boxes
      * @param threshold
      * @param method
-     *//*
-
+     */
     private void nms(Vector<Box> boxes, float threshold, String method) {
-        // NMS.两两比对
+        // NMS.Pairwise comparison
         // int delete_cnt = 0;
         for (int i = 0; i < boxes.size(); i++) {
             Box box = boxes.get(i);
             if (!box.deleted) {
-                // score<0表示当前矩形框被删除
+                // score < 0
+                // Indicates that the current rectangular frame is deleted
                 for (int j = i + 1; j < boxes.size(); j++) {
                     Box box2 = boxes.get(j);
                     if (!box2.deleted) {
@@ -217,7 +211,8 @@ public class MTCNN {
                             iou = 1.0f * areaIoU / (box.area() + box2.area() - areaIoU);
                         else if (method.equals("Min"))
                             iou = 1.0f * areaIoU / (Math.min(box.area(), box2.area()));
-                        if (iou >= threshold) { // 删除prob小的那个框
+                        if (iou >= threshold) {
+                            // Delete the box with the smaller prob
                             if (box.score > box2.score)
                                 box2.deleted = true;
                             else
@@ -234,14 +229,12 @@ public class MTCNN {
             boxes.get(i).calibrate();
     }
 
-    */
-/**
+    /**
      * Refine Net
      * @param bitmap
      * @param boxes
      * @return
-     *//*
-
+     */
     private Vector<Box> rNet(Bitmap bitmap, Vector<Box> boxes) {
         // RNet Input Init
         int num = boxes.size();
@@ -268,13 +261,12 @@ public class MTCNN {
         return updateBoxes(boxes);
     }
 
-    */
-/**
-     * RNET跑神经网络，将score和bias写入boxes
+    /**
+     * RNET
+     * Run neural network and write score and bias into boxes
      * @param rNetIn
      * @param boxes
-     *//*
-
+     */
     private void rNetForward(float[][][][] rNetIn, Vector<Box> boxes) {
         int num = rNetIn.length;
         float[][] prob1 = new float[num][2];
@@ -285,7 +277,7 @@ public class MTCNN {
         outputs.put(rInterpreter.getOutputIndex("rnet/conv5-2/conv5-2"), conv5_2_conv5_2);
         rInterpreter.runForMultipleInputsOutputs(new Object[]{rNetIn}, outputs);
 
-        // 转换
+        // Conversion
         for (int i = 0; i < num; i++) {
             boxes.get(i).score = prob1[i][1];
             for (int j = 0; j < 4; j++) {
@@ -294,15 +286,12 @@ public class MTCNN {
         }
     }
 
-    */
-
-/**
+    /**
      * ONet
      * @param bitmap
      * @param boxes
      * @return
-     *//*
-
+     */
     private Vector<Box> oNet(Bitmap bitmap, Vector<Box> boxes) {
         // ONet Input Init
         int num = boxes.size();
@@ -327,13 +316,11 @@ public class MTCNN {
         return updateBoxes(boxes);
     }
 
-    */
-/**
-     * ONet跑神经网络，将score和bias写入boxes
+    /**
+     * ONetRun neural network and write score and bias into boxes
      * @param oNetIn
      * @param boxes
-     *//*
-
+     */
     private void oNetForward(float[][][][] oNetIn, Vector<Box> boxes) {
         int num = oNetIn.length;
         float[][] prob1 = new float[num][2];
@@ -346,7 +333,7 @@ public class MTCNN {
         outputs.put(oInterpreter.getOutputIndex("onet/conv6-3/conv6-3"), conv6_3_conv6_3);
         oInterpreter.runForMultipleInputsOutputs(new Object[]{oNetIn}, outputs);
 
-        // 转换
+        // Conversion
         for (int i = 0; i < num; i++) {
             // prob
             boxes.get(i).score = prob1[i][1];
@@ -363,13 +350,11 @@ public class MTCNN {
         }
     }
 
-    */
-/**
-     * 删除做了delete标记的box
+    /**
+     * Delete the box marked with delete
      * @param boxes
      * @return
-     *//*
-
+     */
     public static Vector<Box> updateBoxes(Vector<Box> boxes) {
         Vector<Box> b = new Vector<>();
         for (int i = 0; i < boxes.size(); i++) {
@@ -380,4 +365,3 @@ public class MTCNN {
         return b;
     }
 }
-*/

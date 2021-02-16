@@ -1,4 +1,4 @@
-package com.zwp.mobilefacenet.mtcnn;
+package com.example.instantattendance.mtcnn;
 
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -9,11 +9,13 @@ import android.graphics.Point;
  */
 public class Align {
 
+    private static Matrix matrix;
+
     /**
-     * 仿射变换
-     * @param bitmap 原图片
+     * Affine transformation
+     * @param bitmap Original picture
      * @param landmarks landmarks
-     * @return 变换后的图片
+     * @return Transformed picture
      */
     public static Bitmap face_align(Bitmap bitmap, Point[] landmarks) {
         float diffEyeX = landmarks[1].x - landmarks[0].x;
@@ -25,7 +27,7 @@ public class Align {
         } else {
             fAngle = (float) (Math.atan(diffEyeY / diffEyeX) * 180.0f / Math.PI);
         }
-        Matrix matrix = new Matrix();
+        matrix = new Matrix();
         matrix.setRotate(-fAngle);
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
     }

@@ -79,7 +79,7 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
             @Override
             public void onClick(View v) {
                 Intent in = new Intent(context, CameraActivity.class);
-                //in.putExtra("u", u);
+                in.putExtra("sectionN", sectionNo.get(position));
                 context.startActivity(in);
             }
         });

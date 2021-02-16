@@ -1,4 +1,4 @@
-package com.zwp.mobilefacenet.mtcnn;
+package com.example.instantattendance.mtcnn;
 
 import android.graphics.Point;
 import android.graphics.Rect;
@@ -35,7 +35,7 @@ public class Box {
     }
 
     public int bottom() {
-        return box[2];
+        return box[3];
     }
 
     public int width() {

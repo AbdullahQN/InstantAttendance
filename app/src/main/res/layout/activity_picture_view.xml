@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"></ImageView>
 
@@ -42,62 +42,124 @@
         app:srcCompat="@drawable/ic_done" />
 
 
-    <!-- This is for debugging Only-->
+    <!-- This is for debugging Only
+        android:rotation="90"
+        -->
 
     <ImageView
         android:id="@+id/face_preview0"
-        android:layout_width="168dp"
-        android:layout_height="171dp"
-        android:layout_marginTop="36dp"
-        android:rotation="90"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="100dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"></ImageView>
 
     <ImageView
         android:id="@+id/face_preview1"
-        android:layout_width="168dp"
-        android:layout_height="171dp"
-        android:layout_marginTop="36dp"
-        android:rotation="90"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginTop="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/face_preview0"
         app:layout_constraintTop_toTopOf="parent"></ImageView>
 
     <ImageView
         android:id="@+id/face_preview2"
-        android:layout_width="168dp"
-        android:layout_height="171dp"
-        android:rotation="90"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginStart="36dp"
+        app:layout_constraintBottom_toTopOf="@+id/face_preview4"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/face_preview0"></ImageView>
 
     <ImageView
         android:id="@+id/face_preview3"
-        android:layout_width="168dp"
-        android:layout_height="171dp"
-        android:rotation="90"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        app:layout_constraintBottom_toTopOf="@+id/face_preview5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/face_preview2"
         app:layout_constraintTop_toBottomOf="@+id/face_preview1"></ImageView>
 
     <ImageView
         android:id="@+id/face_preview4"
-        android:layout_width="168dp"
-        android:layout_height="171dp"
-        android:rotation="90"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginBottom="36dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/face_preview2"></ImageView>
+        app:layout_constraintStart_toStartOf="parent"></ImageView>
 
     <ImageView
         android:id="@+id/face_preview5"
-        android:layout_width="168dp"
-        android:layout_height="171dp"
-        android:rotation="90"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_marginBottom="36dp"
+
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/face_preview4"
-        app:layout_constraintTop_toBottomOf="@+id/face_preview3"></ImageView>
+        app:layout_constraintStart_toEndOf="@+id/face_preview4"></ImageView>
+
+    <TextView
+        android:id="@+id/txtV0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="16dp"
+        android:text=" "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/face_preview0" />
+
+    <TextView
+        android:id="@+id/txtV2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="16dp"
+        android:text=" "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/face_preview2" />
+
+    <TextView
+        android:id="@+id/txtV4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginTop="16dp"
+        android:text=" "
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/face_preview4" />
+
+    <TextView
+        android:id="@+id/txtV1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text=" "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtV0"
+        app:layout_constraintTop_toBottomOf="@+id/face_preview1" />
+
+    <TextView
+        android:id="@+id/txtV3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text=" "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtV2"
+        app:layout_constraintTop_toBottomOf="@+id/face_preview3" />
+
+    <TextView
+        android:id="@+id/txtV5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text=" "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtV4"
+        app:layout_constraintTop_toBottomOf="@+id/face_preview5" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

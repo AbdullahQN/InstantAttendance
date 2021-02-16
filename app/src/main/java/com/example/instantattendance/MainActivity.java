@@ -138,6 +138,7 @@ public class MainActivity extends AppCompatActivity {
                                 Intent intent = new Intent(getApplicationContext(), HomeActivity.class);
                                 intent.putExtra("u", u);
                                 startActivity(intent);
+                                finish();
                             }
                         } else {
                             ///task is not Successful

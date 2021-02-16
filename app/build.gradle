@@ -34,6 +34,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'com.google.mlkit:face-detection:16.0.4'
+    implementation 'com.google.firebase:firebase-storage:19.2.1'
     // CameraX core library
     def camerax_version = "1.0.0-rc02"
     // The following line is optional, as the core library is included indirectly by camera-camera2

@@ -1,9 +1,13 @@
 package com.example.instantattendance;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
@@ -12,6 +16,10 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FileDownloadTask;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
+import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
 import androidx.annotation.NonNull;
@@ -27,6 +35,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -36,6 +46,8 @@ import java.util.Objects;
 public class HomeActivity extends AppCompatActivity {
 
     private FirebaseAuth uAuth;
+    private StorageReference storeRef;
+    private final String TAG= "Home Activity";
     public Users u;
      ArrayList<Sections> sectionsArrayList;
      ArrayList<String> sectionCodeNames;
@@ -47,6 +59,7 @@ public class HomeActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         uAuth = FirebaseAuth.getInstance();
         final FirebaseUser user = uAuth.getCurrentUser();
+        storeRef = FirebaseStorage.getInstance().getReference();
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -78,12 +91,46 @@ public class HomeActivity extends AppCompatActivity {
         for(int i = 0;i<s.size();i++){
             Log.d("Home",s.get(i).toString());
             String forignkey = s.get(i).toString();
+            File dir = new File(getFilesDir() + "/Sections/"+forignkey);
+            if(!dir.exists()) {
+                dir.mkdirs();
+            }
+
+            //get student reference pictures
+            //gs://instantattenddb.appspot.com/Sections/11111/437100230.png
+            storeRef.child("/Sections/"+s.get(i).toString()).listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+                @Override
+                public void onSuccess(ListResult result) {
+                    for(StorageReference fileRef : result.getItems()) {
+                        // TODO: Download the file using its reference (fileRef)
+                        Log.d(TAG, "onSuccess: "+dir+"/"+fileRef.getName().substring(0,9));
+
+                        final File localFile = new File(dir+"/", fileRef.getName());
+                        fileRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                            @Override
+                            public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                                Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception exception) {
+                            }
+                        });
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(Exception exception) {
+                    // Handle any errors
+                }
+            });
             db.collection("Sections").document(forignkey).get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
+
                             Log.d("Home",document.get("Course_Code")+" "+document.get("Course_Name"));
                             sectionsArrayList.add(Objects.requireNonNull(document).toObject(Sections.class));
                             sectionNames.add(Objects.requireNonNull(document).get("Course_Name").toString());

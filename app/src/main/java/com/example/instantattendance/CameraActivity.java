@@ -65,6 +65,7 @@ public class CameraActivity extends AppCompatActivity {
     private PreviewView previewView;
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     private ImageButton capture;
+    private String sectionNumber;
     private final String TAG= "CameraAct";
     long time;
 
@@ -76,6 +77,9 @@ public class CameraActivity extends AppCompatActivity {
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
         capture = findViewById(R.id.camera_capture_button);
         getSupportActionBar().hide();
+        Intent x = getIntent();
+        sectionNumber = x.getSerializableExtra("sectionN").toString();
+        Log.d(TAG, "onCreate: "+sectionNumber);
         cameraProviderFuture.addListener(() -> {
             try {
                 // Camera provider is now guaranteed to be available
@@ -163,6 +167,7 @@ public class CameraActivity extends AppCompatActivity {
     public void previewTakenPic(){
         Intent in = new Intent(getApplicationContext(),PictureView.class);
         in.putExtra("time",time);
+        in.putExtra("sectionN",sectionNumber);
         startActivity(in);
 
         //finish();
