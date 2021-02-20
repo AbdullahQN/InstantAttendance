@@ -4,6 +4,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,6 +17,7 @@ import android.media.ImageReader;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
@@ -50,6 +52,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
@@ -66,13 +69,15 @@ import java.util.concurrent.TimeUnit;
 public class PictureView extends AppCompatActivity{
     private ImageView im;
     private ImageButton backButton,doneButton ;
+    int detected,recognized,percentage;
+    List<String> recognizedStudents;
     private File fi;
     ProgressDialog pd;
     File RefImagesfolder;
     ArrayList<File> filesList;
     private final String TAG= "PicturePrev";
     long time;
-    private String sectionNumber;
+    private Sections section;
     private MobileFaceNet facenetmodel;
     //for debug
     ImageView face_rec0,face_rec1,face_rec2, face_rec3,face_rec4,face_rec5;
@@ -87,12 +92,15 @@ public class PictureView extends AppCompatActivity{
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        detected=0;
+        recognized=0;
+        percentage=0;
+        recognizedStudents = new ArrayList<>();
         refFaces = new ArrayList<>();
         getSupportActionBar().hide();
         Intent i = getIntent();
-        sectionNumber = i.getSerializableExtra("sectionN").toString();
-        Log.d(TAG, "onCreate: "+sectionNumber);
+        section = (Sections) i.getSerializableExtra("sectionN");
+        Log.d(TAG, "onCreate: "+section.getCourse_Code());
         face_rec0 = (ImageView) findViewById(R.id.face_preview0);
         face_rec1 = (ImageView) findViewById(R.id.face_preview1);
         face_rec2 = (ImageView) findViewById(R.id.face_preview2);
@@ -118,10 +126,37 @@ public class PictureView extends AppCompatActivity{
                 pd = new ProgressDialog(PictureView.this);
                 pd.setMessage("Detecting and recognizing students");
                 pd.setTitle("Taking Attendance In Progress..."); // Setting Title
-                pd.setProgressStyle(ProgressDialog.STYLE_SPINNER); // Progress Dialog Style Spinner
-                pd.show(); // Display Progress Dialog
+                pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL); // Progress Dialog Style Spinner
                 pd.setCancelable(false);
-                inference(time);
+                pd.setButton(DialogInterface.BUTTON_NEGATIVE, "Debug", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        pd.dismiss();//dismiss dialog
+                    }
+                });
+                pd.setButton(DialogInterface.BUTTON_POSITIVE, "View Attendance", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        pd.dismiss();//dismiss dialog
+                        Intent in = new Intent(getApplicationContext(),Attendance.class);
+                        in.putExtra("sectionN",section);
+                        in.putExtra("upd",true);
+                        in.putExtra("rec", (Serializable) recognizedStudents);
+                        startActivity(in);
+                    }
+                });
+                pd.show(); // Display Progress Dialog
+
+                long start = System.nanoTime();
+                float[] i = inference(time);
+                long end = System.nanoTime();
+                //long Duration = (endTime - startTime);
+                float second = ((end - start)/1000000000);
+                //converting time into seconds didnt work because its too small!!
+
+                pd.setProgress(100);
+                pd.setMessage("Time taken: "+second+" Seconds\n"+"Detected students: "+(int)i[0]+"\n"+"Recognized students: "+(int)i[1]+"\n"+"Percentage: "+i[2]+"%");
+                pd.setTitle("Finished taking the attendance");
                 //pd.dismiss();
 
 
@@ -164,9 +199,9 @@ public class PictureView extends AppCompatActivity{
 
     }
 
-    private void inference(long time) {
+    private float[] inference(long time) {
         //
-        File RefImagesfolder = new File(getFilesDir()+"/Sections/"+sectionNumber+"/");
+        File RefImagesfolder = new File(getFilesDir()+"/Sections/"+section.getSection_ID()+"/");
         ArrayList<File> filesList = new ArrayList<>(Arrays.asList(RefImagesfolder.listFiles()));
         FaceDetectorOptions opts =
                 new FaceDetectorOptions.Builder()
@@ -198,10 +233,11 @@ public class PictureView extends AppCompatActivity{
                                         long endTime = System.nanoTime();
                                         long Duration = (endTime - startTime);
                                         //converting time into seconds didnt work because its too small!!
-                                        // long Duration = ((endTime - startTime)/1000000000);
-                                        long convert = TimeUnit.SECONDS.convert(Duration, TimeUnit.NANOSECONDS);
+                                        float convert = ((endTime - startTime)/1000000000);
+                                        //long convert = TimeUnit.SECONDS.convert(Duration, TimeUnit.NANOSECONDS);
                                         Log.d(TAG, "Ended: time taken by detection = " + convert+" Seconds");
                                         Log.d(TAG, "Ended: time taken by detection = " + Duration+" Nano Seconds");
+                                        detected=faces.size();
                                         for(Face x : faces){
                                             int width = x.getBoundingBox().width();
                                             int height = x.getBoundingBox().height();
@@ -255,8 +291,10 @@ public class PictureView extends AppCompatActivity{
                                                                         float _score = facenetmodel.compare(ret,m);
                                                                         Boolean isSame = _score > MobileFaceNet.THRESHOLD;
                                                                         if (isSame) {
+                                                                            recognized++;
                                                                             filesList.remove(f);
                                                                             Log.d(TAG, "Student: "+f.getName().toString().substring(0,9)+" Has been recognized with score " + _score);
+                                                                            recognizedStudents.add(f.getName().toString());
                                                                             switch (finalDebugrotate){
                                                                                 case 0:{
                                                                                     text_rec0.setText(f.getName().toString().substring(0,9));
@@ -288,9 +326,10 @@ public class PictureView extends AppCompatActivity{
                                                         Log.i("---","Exception in thread");
                                                     }
 
-                                                    pd.dismiss();
+
                                                 }
                                             }.start();
+                                            pd.setProgress((debugrotate/faces.size()*100));
 
 
 
@@ -319,10 +358,19 @@ public class PictureView extends AppCompatActivity{
                                 });
 
 
+        float[] i = new float[5];
+        i[0]= (float)detected;
+        i[1]= (float)recognized;
 
-
-
-
+        if (detected==0){
+            i[2]=100;
+        }
+        else {
+            i[2]=(recognized/detected*100);
+        }
+        i[3] = 0;
+        i[4] = 0;
+        return i;
         /*try {
             Pnet model = Pnet.newInstance(getApplicationContext());
             final String filePath = getFilesDir() + "/" + time + ".jpg";

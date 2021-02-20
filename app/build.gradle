@@ -33,6 +33,10 @@ android {
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
+    /*implementation 'com.evrencoskun.library:tableview:0.8.9.2'
+    implementation 'com.xently.xui:core:1.1.4'*/
+    implementation 'com.evrencoskun.library:tableview:0.8.9.2'
+    implementation 'com.github.salehyarahmadi:DataTable:v1.0.1'
     implementation 'com.google.mlkit:face-detection:16.0.4'
     implementation 'com.google.firebase:firebase-storage:19.2.1'
     // CameraX core library

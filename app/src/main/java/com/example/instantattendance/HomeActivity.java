@@ -131,11 +131,11 @@ public class HomeActivity extends AppCompatActivity {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
 
-                            Log.d("Home",document.get("Course_Code")+" "+document.get("Course_Name"));
+                            Log.d("Abdullah100",document.get("Course_Code")+" "+document.get("Course_Name")+document.contains("attendance"));
                             sectionsArrayList.add(Objects.requireNonNull(document).toObject(Sections.class));
-                            sectionNames.add(Objects.requireNonNull(document).get("Course_Name").toString());
-                            sectionCodeNames.add(Objects.requireNonNull(document).get("Course_Code").toString());
-                            CourseAdapter customAdapter = new CourseAdapter(HomeActivity.this, s,sectionCodeNames,sectionNames);
+                            //sectionNames.add(Objects.requireNonNull(document).get("Course_Name").toString());
+                            //sectionCodeNames.add(Objects.requireNonNull(document).get("Course_Code").toString());
+                            CourseAdapter customAdapter = new CourseAdapter(HomeActivity.this,sectionsArrayList);
                             recyclerView.setAdapter(customAdapter); // set the Adapter to RecyclerView
                         }
                     } else {
@@ -144,7 +144,13 @@ public class HomeActivity extends AppCompatActivity {
                     }
                 }
             });
+
+
+
         }
+
+
+
 
 
 

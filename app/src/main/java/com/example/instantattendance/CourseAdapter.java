@@ -16,9 +16,12 @@ import java.util.List;
 
 public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseViewHolder> {
     private Context context;
-    ArrayList<String> sectionNo;
-    ArrayList<String> sectionCodeNames;
-    ArrayList<String> sectionNames;
+    ArrayList<Sections> sections;
+    //ArrayList<String> sectionCodeNames;
+    //ArrayList<String> sectionNames;
+    //ArrayList<ArrayList<String>> registeredStudents;
+    //ArrayList<String> termStart;
+    //ArrayList<String> End;
 
 
 
@@ -46,11 +49,11 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
 
 
-    public CourseAdapter(Context context, ArrayList sectionNo, ArrayList sectionCodeNames, ArrayList sectionNames) {
+    public CourseAdapter(Context context, ArrayList sectionList) {
         this.context = context;
-        this.sectionNo = sectionNo;
-        this.sectionCodeNames = sectionCodeNames;
-        this.sectionNames = sectionNames;
+        this.sections = sectionList;
+        /*this.sectionCodeNames = sectionCodeNames;, ArrayList sectionCodeNames, ArrayList sectionNames
+        this.sectionNames = sectionNames;*/
     }
     @NonNull
     @Override
@@ -71,15 +74,25 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
     @Override
     public void onBindViewHolder(@NonNull CourseViewHolder holder, int position) {
 
-        holder.section.setText(sectionNo.get(position));
-        holder.courseName.setText(sectionNames.get(position));
-        holder.courseCode.setText(sectionCodeNames.get(position));
+        holder.section.setText(sections.get(position).getSection_ID());
+        holder.courseName.setText(sections.get(position).getCourse_Name());
+        holder.courseCode.setText(sections.get(position).getCourse_Code());
 
         holder.takeAttendance.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent in = new Intent(context, CameraActivity.class);
-                in.putExtra("sectionN", sectionNo.get(position));
+                in.putExtra("sectionN", sections.get(position));
+                context.startActivity(in);
+            }
+        });
+
+        holder.viewHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent in = new Intent(context, Attendance.class);
+                in.putExtra("sectionN", sections.get(position));
+                in.putExtra("upd",false);
                 context.startActivity(in);
             }
         });
@@ -90,6 +103,6 @@ public class CourseAdapter extends RecyclerView.Adapter<CourseAdapter.CourseView
 
     @Override
     public int getItemCount() {
-        return sectionNo.size();
+        return sections.size();
     }
 }

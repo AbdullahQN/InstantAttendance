@@ -15,6 +15,12 @@
     <color name="light_blue_A400">#FF00B0FF</color>
     <color name="black_overlay">#66000000</color>
     <color name="background">#A9CCD1</color>
+    <color name="bg_line">#E7E7E7</color>
+
+    <color name="cell_background_color">#ffffff</color>
+    <color name="header_line_color">@android:color/holo_red_light</color>
+
+    <color name="table_view_default_text_color">#0a0a0a</color>
 
 
 </resources>

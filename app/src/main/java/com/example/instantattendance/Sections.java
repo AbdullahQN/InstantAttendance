@@ -1,18 +1,24 @@
 package com.example.instantattendance;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Sections {
+public class Sections implements Serializable {
     private String Course_Code,Course_Name,Section_ID;
     private List<String> Days;
     private List<String> Regesitered_Student;
+    private String Term_Start;
+    private String Term_End;
 
-    public Sections(String course_Code, String course_Name, String section_ID, List<String> days, List<String> regesitered_Student) {
+
+    public Sections(String course_Code, String course_Name, String section_ID, List<String> days, List<String> regesitered_Student, String term_Start,String term_End) {
         Course_Code = course_Code;
         Course_Name = course_Name;
         Section_ID = section_ID;
         Days = days;
         Regesitered_Student = regesitered_Student;
+        Term_Start = term_Start;
+        Term_End = term_End;
     }
     public Sections(Sections s){
         this.Course_Code = s.Course_Code;
@@ -20,9 +26,27 @@ public class Sections {
         this.Days = s.Days;
         this.Section_ID = s.Section_ID;
         this.Regesitered_Student = s.Regesitered_Student;
+        this.Term_End = s.Term_End;
+        this.Term_Start = s.Term_Start;
     }
     public Sections(){
 
+    }
+
+    public String getTerm_Start() {
+        return Term_Start;
+    }
+
+    public void setTerm_Start(String term_Start) {
+        Term_Start = term_Start;
+    }
+
+    public String getTerm_End() {
+        return Term_End;
+    }
+
+    public void setTerm_End(String term_End) {
+        Term_End = term_End;
     }
 
     public List<String> getRegesitered_Student() {

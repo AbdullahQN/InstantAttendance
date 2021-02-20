@@ -31,8 +31,8 @@
 
     <ImageButton
         android:id="@+id/done"
-        android:layout_width="@dimen/round_button_small"
-        android:layout_height="@dimen/round_button_small"
+        android:layout_width="@dimen/round_button_medium"
+        android:layout_height="@dimen/round_button_medium"
         android:layout_marginBottom="@dimen/margin_small"
         android:background="@android:color/transparent"
         android:scaleType="fitCenter"
