@@ -25,7 +25,7 @@ see more at: [Get data with Cloud Firestore](https://firebase.google.com/docs/fi
 
 | Interface | Objective | Progress |
 | --- | --- | --- |
-| MainActivity class | Loading user data | Cocluded |
+| MainActivity class | Loading user data | Concluded |
 | AddCourse class | creating new sections | Concluded |
 | HomeActivity class | Users main interface with the system | Concluded |
 | Attendance class | Spanning attendance sheet | Concluded |
