@@ -76,7 +76,7 @@ public class CameraActivity extends AppCompatActivity {
         previewView = findViewById(R.id.previewView);
         cameraProviderFuture = ProcessCameraProvider.getInstance(this);
         capture = findViewById(R.id.camera_capture_button);
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
         Intent x = getIntent();
         section = (Sections) x.getSerializableExtra("sectionN");
         Log.d(TAG, "Test Abdullah: "+section.getCourse_Name());

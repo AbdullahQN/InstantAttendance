@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#0084bd</color>
     <color name="colorPrimaryDark">#09001C</color>
-    <color name="colorAccent">#008376</color>
+    <color name="colorAccent">#0084bd</color>
     <color name="icActive">#FFFFFFFF</color>
     <color name="icFocused">#DDFFFFFF</color>
     <color name="icPressed">#AAFFFFFF</color>

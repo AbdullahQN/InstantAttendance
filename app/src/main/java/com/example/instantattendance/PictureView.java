@@ -97,7 +97,7 @@ public class PictureView extends AppCompatActivity{
         percentage=0;
         recognizedStudents = new ArrayList<>();
         refFaces = new ArrayList<>();
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
         Intent i = getIntent();
         section = (Sections) i.getSerializableExtra("sectionN");
         Log.d(TAG, "onCreate: "+section.getCourse_Code());

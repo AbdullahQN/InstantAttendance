@@ -1,5 +1,6 @@
 package com.example.instantattendance;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,6 +24,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.gson.Gson;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -30,6 +32,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -58,20 +61,26 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
         Toolbar toolbar = findViewById(R.id.toolbar);
         uAuth = FirebaseAuth.getInstance();
-        final FirebaseUser user = uAuth.getCurrentUser();
+        //final FirebaseUser user = uAuth.getCurrentUser();
         storeRef = FirebaseStorage.getInstance().getReference();
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, user.getEmail().toString(), Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+
 
         Intent intent = getIntent();
         u = (Users) intent.getSerializableExtra("u");
+
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), AddCourse.class);
+                i.putExtra("u",u);
+                startActivity(i);
+
+                /*Snackbar.make(view, user.getEmail().toString(), Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();*/
+            }
+        });
         //view sections
         final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.CourseRecycler);
         // set a LinearLayoutManager with default vertical orientaion

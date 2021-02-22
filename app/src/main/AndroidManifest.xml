@@ -14,9 +14,13 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
+            android:name=".AddCourse"
+            android:label="@string/title_activity_add_course"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
             android:name=".Attendance"
             android:label="@string/title_activity_attendance"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".PictureView" />
         <activity android:name=".CameraActivity" />
         <activity

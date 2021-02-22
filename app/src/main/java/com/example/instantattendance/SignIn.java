@@ -26,7 +26,7 @@ public class SignIn extends AppCompatActivity {
         setContentView(R.layout.activity_sign_in);
         mail = (EditText) findViewById(R.id.signInEmail);
         pass = (EditText) findViewById(R.id.signInPass);
-        getSupportActionBar().hide();
+        //getSupportActionBar().hide();
         //Button reset = (Button) findViewById(R.id.btn_reset_password);
         login = (Button) findViewById(R.id.signInButton);
         logi();
