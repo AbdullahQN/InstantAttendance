@@ -27,8 +27,8 @@ see more at: [Get data with Cloud Firestore](https://firebase.google.com/docs/fi
 | --- | --- | --- |
 | MainActivity class | Loading user data | Ongoing |
 | HomeActivity class | Users main interface with the system | Ongoing |
-| Attendance class | Spanning attendance sheet | Ongoing |
-| TableViewModel class | Helper class for spanning sheet | Ongoing |
+| Attendance class | Spanning attendance sheet | Concluded |
+| TableViewModel class | Helper class for spanning sheet | Concluded |
 | CameraActivity class | Interface with device camera | Concluded |
 | PictureView class | Preview the taken picture | Concluded |
 | SignIn class | Authenticating user with the project database | Concluded |
@@ -73,14 +73,13 @@ Week 5:
 > The system is now able to span a table view containning dates and students for each particular section, eather from Home or after taking the attendance.
 > see more at: [TableView for Android](https://github.com/evrencoskun/TableView). 
 
-
-
-
+- [x] Taking attendance functionality.
+> The system now is cabable of syncing new attendance with our database.
 
 
 Todo:
-- [ ] Taking attendance functionality.
 - [ ] TensorFlowLight integration of MTCNN and Facenet in different scenarios:
+
 
 | ML | Solution 1 | Solution 2 |
 | --- | --- | --- |
