@@ -27,6 +27,8 @@ see more at: [Get data with Cloud Firestore](https://firebase.google.com/docs/fi
 | --- | --- | --- |
 | MainActivity class | Loading user data | Ongoing |
 | HomeActivity class | Users main interface with the system | Ongoing |
+| Attendance class | Spanning attendance sheet | Ongoing |
+| TableViewModel class | Helper class for spanning sheet | Ongoing |
 | CameraActivity class | Interface with device camera | Concluded |
 | PictureView class | Preview the taken picture | Concluded |
 | SignIn class | Authenticating user with the project database | Concluded |
@@ -79,6 +81,7 @@ Week 5:
 Todo:
 - [ ] Taking attendance functionality.
 - [ ] TensorFlowLight integration of MTCNN and Facenet in different scenarios:
+
 | ML | Solution 1 | Solution 2 |
 | --- | --- | --- |
 | MTCNN | On device integration | Cloud integration |
