@@ -56,11 +56,29 @@ WEEK 4:
 > Read the taken picture from storage and view it, with the option to start taking the attendance (implemented in PictureView class).
 > see more at: [Analyze images](https://developer.android.com/training/camerax/analyze).
 
+
+Week 5:
+- [x] FaceNet using TensorFlowLight.
+> inference on FaceNetMobile is now complete.
+> see more at: [Face Recognition on Android](https://github.com/shubham0204/FaceRecognition_With_FaceNet_Android).
+
+- [x] Multi Threading and perfomance improvments in inference.
+> Instead of always running on the main thread the inference is now working on multiple Threads.
+> see more at: [Better performance through threading](https://developer.android.com/topic/performance/threads).
+
+- [x] Spanning a view table that contains attendance history. 
+- [x] Home interface (The ability to view attendance history for a particular section).
+> The system is now able to span a table view containning dates and students for each particular section, eather from Home or after taking the attendance.
+> see more at: [TableView for Android](https://github.com/evrencoskun/TableView). 
+
+
+
+
+
+
 Todo:
-- [ ] Home interface (The ability to view attendance history for a particular section).
 - [ ] Taking attendance functionality.
 - [ ] TensorFlowLight integration of MTCNN and Facenet in different scenarios:
-
 | ML | Solution 1 | Solution 2 |
 | --- | --- | --- |
 | MTCNN | On device integration | Cloud integration |
