@@ -274,12 +274,7 @@ public class PictureView extends AppCompatActivity{
                                                 @Override
                                                 public void run() {
                                                     pd.show();
-
-
                                                     try {
-
-
-
                                                         // facenet code runs in a thread
                                                         runOnUiThread(new Runnable() {
                                                             @Override
@@ -294,7 +289,7 @@ public class PictureView extends AppCompatActivity{
                                                                             recognized++;
                                                                             filesList.remove(f);
                                                                             Log.d(TAG, "Student: "+f.getName().toString().substring(0,9)+" Has been recognized with score " + _score);
-                                                                            recognizedStudents.add(f.getName().toString());
+                                                                            recognizedStudents.add(f.getName().toString().substring(0,9));
                                                                             switch (finalDebugrotate){
                                                                                 case 0:{
                                                                                     text_rec0.setText(f.getName().toString().substring(0,9));
