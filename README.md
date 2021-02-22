@@ -26,7 +26,8 @@ see more at: [Get data with Cloud Firestore](https://firebase.google.com/docs/fi
 | Interface | Objective | Progress |
 | --- | --- | --- |
 | MainActivity class | Loading user data | Ongoing |
-| HomeActivity class | Users main interface with the system | Ongoing |
+| AddCourse class | creating new sections | Concluded |
+| HomeActivity class | Users main interface with the system | Concluded |
 | Attendance class | Spanning attendance sheet | Concluded |
 | TableViewModel class | Helper class for spanning sheet | Concluded |
 | CameraActivity class | Interface with device camera | Concluded |
@@ -76,6 +77,8 @@ Week 5:
 - [x] Taking attendance functionality.
 > The system now is cabable of syncing new attendance with our database.
 
+- [x] Users can create sections.
+> Creating new section functionnality through AddCourse class.
 
 Todo:
 - [ ] TensorFlowLight integration of MTCNN and Facenet in different scenarios:
