@@ -90,7 +90,6 @@ Week 5:
 
 
 Todo:
-- [ ] Student sign up. 
 - [ ] Testing.
 
 
