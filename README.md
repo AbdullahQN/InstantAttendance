@@ -88,8 +88,7 @@ Week 5:
 - [x] Faculty members can now sign up.
 > Through sign in screen Faculty can now choose to sign up.
 
-
-Todo:
-- [ ] Testing.
+Week 6:
+- [x] Testing.
 
 
