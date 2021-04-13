@@ -13,12 +13,12 @@ import java.io.IOException;
  * 人脸比对
  */
 public class MobileFaceNet {
-    private static final String MODEL_FILE = "MobileFaceNet.tflite";
+    private static final String MODEL_FILE = "facenet.tflite";
 
     // The width and height of the placeholder image that needs feed data
-    public static final int INPUT_IMAGE_SIZE = 112;
+    public static final int INPUT_IMAGE_SIZE = 180;
     // Set a threshold value, greater than this value is considered the same person
-    public static final float THRESHOLD = 0.75f;
+    public static final float THRESHOLD = 0.96f;
 
     private Interpreter interpreter;
 
@@ -34,10 +34,20 @@ public class MobileFaceNet {
         Bitmap bitmapScale2 = Bitmap.createScaledBitmap(bitmap2, INPUT_IMAGE_SIZE, INPUT_IMAGE_SIZE, true);
 
         float[][][][] datasets = getTwoImageDatasets(bitmapScale1, bitmapScale2);
-        float[][] embeddings = new float[2][192];
+        float[][] embeddings = new float[2][512];
         interpreter.run(datasets, embeddings);
         MyUtil.l2Normalize(embeddings, 1e-10);
         return evaluate(embeddings);
+    }
+    public float[][] prepros(Bitmap bitmap1) {
+        // Resize the face to 112X112, because the shape of the placeholder that needs feed data is (2, 112, 112, 3)
+        Bitmap bitmapScale1 = Bitmap.createScaledBitmap(bitmap1, INPUT_IMAGE_SIZE, INPUT_IMAGE_SIZE, true);
+
+        float[][][][] datasets = getOneImageDataset(bitmapScale1);
+        float[][] embeddings = new float[1][512];
+        interpreter.run(datasets, embeddings);
+        MyUtil.l2Normalize(embeddings, 1e-10);
+        return embeddings;
     }
 
     /**
@@ -45,7 +55,7 @@ public class MobileFaceNet {
      * @param embeddings
      * @return
      */
-    private float evaluate(float[][] embeddings) {
+    public float evaluate(float[][] embeddings) {
         float[] embeddings1 = embeddings[0];
         float[] embeddings2 = embeddings[1];
         float dist = 0;
@@ -70,6 +80,18 @@ public class MobileFaceNet {
      */
     private float[][][][] getTwoImageDatasets(Bitmap bitmap1, Bitmap bitmap2) {
         Bitmap[] bitmaps = {bitmap1, bitmap2};
+
+        int[] ddims = {bitmaps.length, INPUT_IMAGE_SIZE, INPUT_IMAGE_SIZE, 3};
+        float[][][][] datasets = new float[ddims[0]][ddims[1]][ddims[2]][ddims[3]];
+
+        for (int i = 0; i < ddims[0]; i++) {
+            Bitmap bitmap = bitmaps[i];
+            datasets[i] = MyUtil.normalizeImage(bitmap);
+        }
+        return datasets;
+    }
+    private float[][][][] getOneImageDataset(Bitmap bitmap1) {
+        Bitmap[] bitmaps = {bitmap1};
 
         int[] ddims = {bitmaps.length, INPUT_IMAGE_SIZE, INPUT_IMAGE_SIZE, 3};
         float[][][][] datasets = new float[ddims[0]][ddims[1]][ddims[2]][ddims[3]];

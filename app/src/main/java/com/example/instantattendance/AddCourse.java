@@ -54,6 +54,7 @@ public class AddCourse extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_course);
         Toolbar toolbar = findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
         days = new ArrayList<>();
         courseId = findViewById(R.id.course_id_edit_text);
@@ -70,11 +71,6 @@ public class AddCourse extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        // getSupportFragmentManager() to
-                        // interact with the fragments
-                        // associated with the material design
-                        // date picker tag is to get any error
-                        // in logcat
                         datePicker.show(getSupportFragmentManager(), "MATERIAL_DATE_PICKER");
                         datePicker.addOnPositiveButtonClickListener(new MaterialPickerOnPositiveButtonClickListener() {
                             @Override
@@ -170,10 +166,44 @@ public class AddCourse extends AppCompatActivity {
                     data.put("Course_Name",courseName.getText().toString());
                     data.put("Section_ID",courseId.getText().toString());
                     data.put("Term_End",termEndDate);
-                    data.put("Term_Start",termEndDate);
+                    data.put("Term_Start",termStartDate);
                     //HashMap<String,ArrayList<String>> data2 = new HashMap<>();
                     data.put("Days",days);
                     ArrayList<String> s = new ArrayList<>();
+                    //for testing
+                    /*s.add("437100230");
+                    s.add("437101282");
+                    s.add("437102089");
+                    s.add("437103990");
+                    s.add("437106714");
+                    s.add("437143428");
+                    s.add("437193542");
+                    s.add("437231574");
+                    s.add("437241926");
+                    s.add("437243879");
+
+                    s.add("437270655");
+                    s.add("437301533");
+                    s.add("437344924");
+                    s.add("437441762");
+                    s.add("437465366");
+                    s.add("437479097");
+                    s.add("437531496");
+                    s.add("437612571");
+                    s.add("437639059");
+                    s.add("437709799");
+
+                    s.add("437724433");
+                    s.add("437782075");
+                    s.add("437874254");
+                    s.add("437882438");
+                    s.add("437892899");
+                    s.add("437913845");
+                    s.add("437919537");
+                    s.add("437925615");
+                    s.add("437958786");
+                    s.add("438104522");
+*/
                     /*if(!db.collection("Sections").document("courseId.getText().toString()").get(Source.valueOf("Regesitered_Student")).isSuccessful()){
                         data2.put("Regesitered_Student",s);
                     }*/

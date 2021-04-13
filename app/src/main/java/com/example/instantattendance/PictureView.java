@@ -37,6 +37,8 @@ import com.google.android.gms.common.util.IOUtils;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.common.base.Charsets;
+import com.google.common.io.CharStreams;
 import com.google.mlkit.vision.common.InputImage;
 import com.google.mlkit.vision.face.Face;
 import com.google.mlkit.vision.face.FaceDetection;
@@ -52,6 +54,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
 import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
@@ -68,6 +72,8 @@ import java.util.concurrent.TimeUnit;
 
 public class PictureView extends AppCompatActivity{
     private ImageView im;
+
+    float sumScore = 0,average =0;
     private ImageButton backButton,doneButton ;
     int detected,recognized,percentage;
     List<String> recognizedStudents;
@@ -81,7 +87,7 @@ public class PictureView extends AppCompatActivity{
     private MobileFaceNet facenetmodel;
     //for debug
     ImageView face_rec0,face_rec1,face_rec2, face_rec3,face_rec4,face_rec5;
-    TextView text_rec0,text_rec1,text_rec2,text_rec3,text_rec4,text_rec5;
+    TextView text_rec0,text_rec1,text_rec2,text_rec3,text_rec4,text_rec5,text_prev;
     ArrayList<Bitmap> refFaces;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,6 +119,8 @@ public class PictureView extends AppCompatActivity{
         text_rec3 = (TextView) findViewById(R.id.txtV3);
         text_rec4 = (TextView) findViewById(R.id.txtV4);
         text_rec5 = (TextView) findViewById(R.id.txtV5);
+        text_prev = (TextView) findViewById(R.id.txt_preview);
+        //txt_preview
         time =(long) i.getSerializableExtra("time");
         final String filePath = getFilesDir() + "/" + time + ".jpg";
         Log.d(TAG, "onCreate: "+filePath);
@@ -120,43 +128,21 @@ public class PictureView extends AppCompatActivity{
         im = (ImageView) findViewById(R.id.image_preview);
         backButton = (ImageButton) findViewById(R.id.back_button);
         doneButton = (ImageButton) findViewById(R.id.done);
+
         doneButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pd = new ProgressDialog(PictureView.this);
-                pd.setMessage("Detecting and recognizing students");
-                pd.setTitle("Taking Attendance In Progress..."); // Setting Title
-                pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL); // Progress Dialog Style Spinner
-                pd.setCancelable(false);
-                pd.setButton(DialogInterface.BUTTON_NEGATIVE, "Debug", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        pd.dismiss();//dismiss dialog
-                    }
-                });
-                pd.setButton(DialogInterface.BUTTON_POSITIVE, "View Attendance", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        pd.dismiss();//dismiss dialog
-                        Intent in = new Intent(getApplicationContext(),Attendance.class);
-                        in.putExtra("sectionN",section);
-                        in.putExtra("upd",true);
-                        in.putExtra("rec", (Serializable) recognizedStudents);
-                        startActivity(in);
-                    }
-                });
-                pd.show(); // Display Progress Dialog
 
-                long start = System.nanoTime();
-                float[] i = inference(time);
-                long end = System.nanoTime();
+                //long start = System.nanoTime();
+                inference(time);
+                //long end = System.nanoTime();
                 //long Duration = (endTime - startTime);
-                float second = ((end - start)/1000000000);
+                //float second = ((end - start)/1000000000);
                 //converting time into seconds didnt work because its too small!!
 
-                pd.setProgress(100);
-                pd.setMessage("Time taken: "+second+" Seconds\n"+"Detected students: "+(int)i[0]+"\n"+"Recognized students: "+(int)i[1]+"\n"+"Percentage: "+i[2]+"%");
-                pd.setTitle("Finished taking the attendance");
+
+                //pd.setMessage("Time taken: "+second+" Seconds\n"+"Detected students: "+(int)i[0]+"\n"+"Recognized students: "+(int)i[1]+"\n"+"Percentage: "+i[2]+"%");
+
                 //pd.dismiss();
 
 
@@ -199,30 +185,64 @@ public class PictureView extends AppCompatActivity{
 
     }
 
-    private float[] inference(long time) {
+    private void inference(long time) {
+
+        pd = new ProgressDialog(PictureView.this);
+        pd.setMessage("Detecting and recognizing students");
+        pd.setTitle("Taking Attendance In Progress..."); // Setting Title
+        pd.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL); // Progress Dialog Style Spinner
+        pd.setCancelable(false);
+        pd.setButton(DialogInterface.BUTTON_NEGATIVE, "Debug", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                pd.dismiss();//dismiss dialog
+            }
+        });
+        pd.setMax(100);
+        pd.setButton(DialogInterface.BUTTON_POSITIVE, "View Attendance", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                pd.dismiss();//dismiss dialog
+                Intent in = new Intent(getApplicationContext(),Attendance.class);
+                in.putExtra("sectionN",section);
+                in.putExtra("upd",true);
+                in.putExtra("rec", (Serializable) recognizedStudents);
+                startActivity(in);
+            }
+        });
+        pd.show(); // Display Progress Dialog
+
         //
+        List<Thread> threads = new ArrayList<>();
         File RefImagesfolder = new File(getFilesDir()+"/Sections/"+section.getSection_ID()+"/");
         ArrayList<File> filesList = new ArrayList<>(Arrays.asList(RefImagesfolder.listFiles()));
         FaceDetectorOptions opts =
                 new FaceDetectorOptions.Builder()
                         .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
-                        .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_ALL)
-                        .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_ALL)
+                        .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_NONE)
+                        .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_NONE)
                         .build();
 
         Log.d(TAG, "STARTED: time 0");
-        long startTime = System.nanoTime();
+        float startTime = System.nanoTime();
         FaceDetector detector = FaceDetection.getClient(opts);
         final String filePath = getFilesDir() + "/" + time + ".jpg";
         Log.d(TAG, "inference: "+filePath);
         fi = new File(filePath);
-        Bitmap m =BitmapFactory.decodeFile(fi.getAbsolutePath());
+        final String testfilePath = getFilesDir() + "/test/t30.png";
+        Log.d(TAG, "inference: "+testfilePath);
+        File fitest = new File(testfilePath);
+
+        // testing
+
+        Bitmap m =BitmapFactory.decodeFile(fitest.getAbsolutePath());
         InputImage image = InputImage.fromByteArray(bitmapToNV21(m),
                 /* image width */ m.getWidth(),
                 /* image height */ m.getHeight(),
                 0,
                 InputImage.IMAGE_FORMAT_NV21 // or IMAGE_FORMAT_YV12
         );
+
         Task<List<Face>> result =
                 detector.process(image)
                         .addOnSuccessListener(
@@ -230,29 +250,212 @@ public class PictureView extends AppCompatActivity{
                                     @Override
                                     public void onSuccess(List<Face> faces) {
                                         int debugrotate = 0;
-                                        long endTime = System.nanoTime();
-                                        long Duration = (endTime - startTime);
+                                        float endTime = System.nanoTime();
+                                        float Duration = (endTime - startTime);
                                         //converting time into seconds didnt work because its too small!!
-                                        float convert = ((endTime - startTime)/1000000000);
+                                        float convert= ((endTime - startTime)/1000000000);
                                         //long convert = TimeUnit.SECONDS.convert(Duration, TimeUnit.NANOSECONDS);
-                                        Log.d(TAG, "Ended: time taken by detection = " + convert+" Seconds");
+                                        Log.d(TAG, "Ended: time taken by detection = " + convert +" Seconds");
                                         Log.d(TAG, "Ended: time taken by detection = " + Duration+" Nano Seconds");
+
                                         detected=faces.size();
                                         for(Face x : faces){
                                             int width = x.getBoundingBox().width();
                                             int height = x.getBoundingBox().height();
-                                            /*Bitmap croppedBitmap = Bitmap.createBitmap(
-                                            irotateBitmap( source , -90f )!! else source,
-                                                    rect.left,
-                                                    rect.top,
-                                                    width,
-                                                    height )
-                                            int w = x.getBoundingBox().right - x.getBoundingBox().left;
-                                            int h = x.getBoundingBox().bottom - x.getBoundingBox().top;*/
                                             Bitmap ret = Bitmap.createBitmap(width,height ,m.getConfig());
                                             Canvas canvas = new Canvas(ret);
                                             canvas.drawBitmap(m, -x.getBoundingBox().left, -x.getBoundingBox().top, null);
                                             //Log.d(TAG, "onSuccess: "+RefImagesfolder);
+                                            switch (debugrotate){
+                                                case 0:{
+                                                    im.setVisibility(View.INVISIBLE);
+                                                    face_rec0.setImageBitmap(ret);
+                                                    break;}
+                                                case 1:face_rec1.setImageBitmap(ret);
+                                                    break;
+                                                case 2:face_rec2.setImageBitmap(ret);
+                                                    break;
+                                                case 3:face_rec3.setImageBitmap(ret);
+                                                    break;
+                                                case 4:face_rec4.setImageBitmap(ret);
+                                                    break;
+                                                default:face_rec5.setImageBitmap(ret);
+                                            }
+                                            //
+                                            int finalDebugrotate = debugrotate;
+                                            Thread a = new Thread() {
+                                                @Override
+                                                public void run() {
+
+                                                    try {
+                                                        // facenet code runs in a thread
+                                                        runOnUiThread(new Runnable() {
+                                                            @Override
+                                                            public void run() {
+                                                                //
+                                                                if(!filesList.isEmpty()){
+                                                                    for(File f: filesList){
+                                                                        Bitmap m = BitmapFactory.decodeFile(f.getAbsolutePath());
+                                                                        float _score = facenetmodel.compare(ret,m);
+                                                                       /* float[][] embed =facenetmodel.prepros(ret);
+                                                                        float[][] embed2 =facenetmodel.prepros(m);
+                                                                        //float[][] embed3 =new float[2][512];
+                                                                        float[] embeddings1 = embed[0];
+                                                                        float[] embeddings2 = embed2[0];
+                                                                        float dist = 0;
+                                                                        for (int i = 0; i < 192; i++) {
+                                                                            dist += Math.pow(embeddings1[i] - embeddings2[i], 2);
+                                                                        }
+                                                                        float same = 0;
+                                                                        for (int i = 0; i < 400; i++) {
+                                                                            float threshold = 0.01f * (i + 1);
+                                                                            if (dist < threshold) {
+                                                                                same += 1.0 / 400;
+                                                                            }
+                                                                        }
+                                                                        //float _score = facenetmodel.evaluate(embed,embed2);
+                                                                        Log.d(TAG, "run: "+same);*/
+
+                                                                        Boolean isSame = _score > MobileFaceNet.THRESHOLD;//0.96
+                                                                        if (isSame) {
+                                                                            recognized++;
+                                                                            if(recognized == faces.size()){
+                                                                                pd.setMessage(" ");
+                                                                                pd.setTitle("Finished taking the attendance");
+                                                                                pd.setProgress(100);
+
+
+                                                                            }
+                                                                            pd.setProgress((recognized/faces.size())*100);
+                                                                            sumScore +=_score;
+                                                                            average = sumScore/recognized;
+                                                                            float endTime2 = System.nanoTime();
+                                                                            float convert2= ((endTime2 - endTime)/1000000000);
+                                                                            text_prev.setText("Student Detected:  "+detected+"\n"+"Student Recognized: "+recognized+"\n"+"Time Detecting: "+ convert + " Seconds\n"+"Time Recognition: "+convert2+" Seconds\n"+"Total Time: "+(convert+convert2)+" Seconds\n");
+                                                                            filesList.remove(f);
+                                                                            Log.d(TAG, "Student: "+f.getName().toString().substring(0,9)+" Has been recognized with score " + _score+"new Average: "+average);
+                                                                            recognizedStudents.add(f.getName().toString().substring(0,9));
+                                                                            switch (finalDebugrotate){
+                                                                                case 0:{
+                                                                                    text_rec0.setText(f.getName().toString().substring(0,9));
+                                                                                    break;}
+                                                                                case 1:text_rec1.setText(f.getName().toString().substring(0,9));
+                                                                                    break;
+                                                                                case 2:text_rec2.setText(f.getName().toString().substring(0,9));
+                                                                                    break;
+                                                                                case 3:text_rec3.setText(f.getName().toString().substring(0,9));
+                                                                                    break;
+                                                                                case 4:text_rec4.setText(f.getName().toString().substring(0,9));
+                                                                                    break;
+                                                                                default:text_rec5.setText(f.getName().toString().substring(0,9));
+                                                                            }
+                                                                            break;
+                                                                        } else {
+                                                                            Log.d(TAG, "Student is not recognized as "+f.getName().toString().substring(0,9)+" with score " + _score);
+                                                                        }
+                                                                    }
+
+                                                                }else{
+                                                                    Log.d(TAG, "run: List is empty");
+                                                                    //
+
+                                                                }
+                                                            }
+                                                        });
+                                                    } catch (final Exception ex) {
+                                                        Log.i("---","Exception in thread");
+                                                    }
+
+
+                                                }
+                                            };
+                                            a.start();
+                                            /*while(a.isAlive()){
+
+                                            }*/
+                                            threads.add(a);
+                                            //pd.setProgress((debugrotate/faces.size())*100);
+                                            debugrotate++;
+                                            Log.d(TAG, "onSuccess: "+x.getBoundingBox()+" "+x.getBoundingBox().top+" "+x.getBoundingBox().bottom+" "+x.getBoundingBox().right+" "+x.getBoundingBox().left);
+
+                                        }
+                                    }
+
+                                })
+                        .addOnFailureListener(
+                                new OnFailureListener() {
+                                    @Override
+                                    public void onFailure(@NonNull Exception e) {
+                                        Log.d(TAG, "onFailure: "+e);
+                                    }
+                                });
+
+
+    }
+
+
+
+    private void infera(long time) {
+        //
+        List<Thread> threads = new ArrayList<>();
+        File RefImagesfolder = new File(getFilesDir()+"/Sections/"+section.getSection_ID()+"/");
+        ArrayList<File> filesList = new ArrayList<>(Arrays.asList(RefImagesfolder.listFiles()));
+        FaceDetectorOptions opts =
+                new FaceDetectorOptions.Builder()
+                        .setPerformanceMode(FaceDetectorOptions.PERFORMANCE_MODE_ACCURATE)
+                        .setLandmarkMode(FaceDetectorOptions.LANDMARK_MODE_NONE)
+                        .setClassificationMode(FaceDetectorOptions.CLASSIFICATION_MODE_NONE)
+                        .build();
+
+        Log.d(TAG, "STARTED: time 0");
+        float startTime = System.nanoTime();
+        FaceDetector detector = FaceDetection.getClient(opts);
+        /*final String filePath = getFilesDir() + "/" + time + ".jpg";
+        Log.d(TAG, "inference: "+filePath);
+        fi = new File(filePath);*/
+        final String testfilePath = getFilesDir() + "/test/t3.png";
+        Log.d(TAG, "inference: "+testfilePath);
+        File fitest = new File(testfilePath);
+
+        // testing
+
+        Bitmap m =BitmapFactory.decodeFile(fitest.getAbsolutePath());
+        InputImage image = InputImage.fromByteArray(bitmapToNV21(m),
+                /* image width */ m.getWidth(),
+                /* image height */ m.getHeight(),
+                0,
+                InputImage.IMAGE_FORMAT_NV21 // or IMAGE_FORMAT_YV12
+        );
+
+        /*Bitmap m =BitmapFactory.decodeFile(fi.getAbsolutePath());
+        InputImage image = InputImage.fromByteArray(bitmapToNV21(m),
+                *//* image width *//* m.getWidth(),
+         *//* image height *//* m.getHeight(),
+                0,
+                InputImage.IMAGE_FORMAT_NV21 // or IMAGE_FORMAT_YV12
+        );*/
+        Task<List<Face>> result =
+                detector.process(image)
+                        .addOnSuccessListener(
+                                new OnSuccessListener<List<Face>>() {
+                                    @Override
+                                    public void onSuccess(List<Face> faces) {
+                                        int debugrotate = 0;
+                                        float endTime = System.nanoTime();
+                                        float Duration = (endTime - startTime);
+                                        //converting time into seconds didnt work because its too small!!
+                                        float convert= ((endTime - startTime)/1000000000);
+                                        //long convert = TimeUnit.SECONDS.convert(Duration, TimeUnit.NANOSECONDS);
+                                        Log.d(TAG, "Ended: time taken by detection = " + convert +" Seconds");
+
+                                        detected=faces.size();
+                                        for(Face x : faces){
+                                            int width = x.getBoundingBox().width();
+                                            int height = x.getBoundingBox().height();
+                                            Bitmap ret = Bitmap.createBitmap(width,height ,m.getConfig());
+                                            Canvas canvas = new Canvas(ret);
+                                            canvas.drawBitmap(m, -x.getBoundingBox().left, -x.getBoundingBox().top, null);
+                                            Log.d(TAG, "onSuccess: "+RefImagesfolder);
                                             switch (debugrotate){
                                                 case 0:{
                                                     im.setVisibility(View.INVISIBLE);
@@ -284,11 +487,35 @@ public class PictureView extends AppCompatActivity{
                                                                     for(File f: filesList){
                                                                         Bitmap m = BitmapFactory.decodeFile(f.getAbsolutePath());
                                                                         float _score = facenetmodel.compare(ret,m);
-                                                                        Boolean isSame = _score > MobileFaceNet.THRESHOLD;
+                                                                       /* float[][] embed =facenetmodel.prepros(ret);
+                                                                        float[][] embed2 =facenetmodel.prepros(m);
+                                                                        //float[][] embed3 =new float[2][512];
+                                                                        float[] embeddings1 = embed[0];
+                                                                        float[] embeddings2 = embed2[0];
+                                                                        float dist = 0;
+                                                                        for (int i = 0; i < 192; i++) {
+                                                                            dist += Math.pow(embeddings1[i] - embeddings2[i], 2);
+                                                                        }
+                                                                        float same = 0;
+                                                                        for (int i = 0; i < 400; i++) {
+                                                                            float threshold = 0.01f * (i + 1);
+                                                                            if (dist < threshold) {
+                                                                                same += 1.0 / 400;
+                                                                            }
+                                                                        }
+                                                                        //float _score = facenetmodel.evaluate(embed,embed2);
+                                                                        Log.d(TAG, "run: "+same);*/
+
+                                                                        Boolean isSame = _score > MobileFaceNet.THRESHOLD;//0.96
                                                                         if (isSame) {
                                                                             recognized++;
+                                                                            sumScore +=_score;
+                                                                            average = sumScore/recognized;
+                                                                            float endTime2 = System.nanoTime();
+                                                                            float convert2= ((endTime2 - endTime)/1000000000);
+                                                                            text_prev.setText("Student Detected:  "+detected+"\n"+"Student Recognized: "+recognized+"\n"+"Time Detecting: "+ convert + " Seconds\n"+"Time Recognition: "+convert2+" Seconds\n"+"Total Time: "+(convert+convert2)+" Seconds\n");
                                                                             filesList.remove(f);
-                                                                            Log.d(TAG, "Student: "+f.getName().toString().substring(0,9)+" Has been recognized with score " + _score);
+                                                                            Log.d(TAG, "Student: "+f.getName().toString().substring(0,9)+" Has been recognized with score " + _score+"new Average: "+average);
                                                                             recognizedStudents.add(f.getName().toString().substring(0,9));
                                                                             switch (finalDebugrotate){
                                                                                 case 0:{
@@ -324,20 +551,12 @@ public class PictureView extends AppCompatActivity{
 
                                                 }
                                             }.start();
-                                            pd.setProgress((debugrotate/faces.size()*100));
+                                            /*while(a.isAlive()){
 
-
-
-
-
-                                            /*for (Bitmap b: refFaces){
-
-                                            }*/
-
-
+                                            }
+                                            threads.add(a);*/
+                                            pd.setProgress((debugrotate/faces.size())*100);
                                             debugrotate++;
-
-                                            //im.setRotation(-90);
                                             Log.d(TAG, "onSuccess: "+x.getBoundingBox()+" "+x.getBoundingBox().top+" "+x.getBoundingBox().bottom+" "+x.getBoundingBox().right+" "+x.getBoundingBox().left);
                                         }
                                     }
@@ -346,93 +565,14 @@ public class PictureView extends AppCompatActivity{
                                 new OnFailureListener() {
                                     @Override
                                     public void onFailure(@NonNull Exception e) {
-                                        // Task failed with an exception
-                                        // ...
                                         Log.d(TAG, "onFailure: "+e);
                                     }
                                 });
 
-
-        float[] i = new float[5];
-        i[0]= (float)detected;
-        i[1]= (float)recognized;
-
-        if (detected==0){
-            i[2]=100;
-        }
-        else {
-            i[2]=(recognized/detected*100);
-        }
-        i[3] = 0;
-        i[4] = 0;
-        return i;
-        /*try {
-            Pnet model = Pnet.newInstance(getApplicationContext());
-            final String filePath = getFilesDir() + "/" + time + ".jpg";
-            Log.d(TAG, "inference: "+filePath);
-            fi = new File(filePath);
-            byte[] getBytes = {};
-            try {
-                getBytes = new byte[(int) fi.length()];
-                InputStream is = new FileInputStream(fi);
-
-                is.read(getBytes);
-                Bitmap bitmap = BitmapFactory.decodeStream(is);
-                is.close();
-                // Creates inputs for reference.
-                TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 600, 800, 3}, DataType.FLOAT32);
-                Log.d(TAG, "inference: "+getBytes.length);
-                inputFeature0.loadBuffer(ByteBuffer.wrap(getBytes));
-                // Runs model inference and gets result.
-                Pnet.Outputs outputs = model.process(inputFeature0);
-                TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
-                TensorBuffer outputFeature1 = outputs.getOutputFeature1AsTensorBuffer();
-                TensorBuffer outputFeature2 = outputs.getOutputFeature2AsTensorBuffer();
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
-            // Releases model resources if no longer used.
-            model.close();
-        } catch (IOException e) {
-            // TODO Handle the exception
-        }*/
-        /*try {
-            Facenet model = Facenet.newInstance(getApplicationContext());
-            final String filePath = getFilesDir() + "/" + time + ".jpg";
-            Log.d(TAG, "inference: "+filePath);
-            fi = new File(filePath);
-            byte[] getBytes = {};
-            try {
-                getBytes = new byte[(int) fi.length()];
-                InputStream is = new FileInputStream(fi);
-                is.read(getBytes);
-                is.close();
-                // Creates inputs for reference.
-                TensorBuffer inputFeature0 = TensorBuffer.createFixedSize(new int[]{1, 160, 160, 3}, DataType.FLOAT32);
-                inputFeature0.loadBuffer(ByteBuffer.wrap(getBytes));
-
-                // Runs model inference and gets result.
-                Facenet.Outputs outputs = model.process(inputFeature0);
-                TensorBuffer outputFeature0 = outputs.getOutputFeature0AsTensorBuffer();
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-
-
-            // Releases model resources if no longer used.
-            model.close();
-        } catch (IOException e) {
-            // TODO Handle the exception
-        }*/
     }
+
+
+
 
     private void doLongOperation() {
         try {
@@ -441,17 +581,6 @@ public class PictureView extends AppCompatActivity{
             Log.d(TAG, "doLongOperation: "+e);
         }
     }
-
-    /*private void facenetInfra(List<File> filesList, Bitmap ret) {
-        List<File> fileLis =filesList;
-        Bitmap b = ret;
-
-
-                
-            }*/
-
-
-
 
 
     private final byte[] bitmapToNV21(Bitmap bitmap) {

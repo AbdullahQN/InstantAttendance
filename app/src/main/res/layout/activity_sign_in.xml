@@ -32,7 +32,20 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signInPass" />
+        app:layout_constraintTop_toBottomOf="@id/signInPass" />
+    <Button
+        android:id="@+id/signUpButton"
+        android:layout_width="182dp"
+        android:layout_height="47dp"
+        android:layout_marginBottom="7dp"
+        android:background="@drawable/button_rounded"
+        android:text="Sign up"
+        android:textColor="@color/design_default_color_on_primary"
+        android:textSize="22sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/signInButton" />
 
     <EditText
         android:id="@+id/signInPass"
@@ -53,7 +66,7 @@
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signInEmail" />
+        app:layout_constraintTop_toBottomOf="@id/signInEmail" />
 
 
     <EditText
@@ -76,11 +89,43 @@
         android:textColorHint="@color/icActive"
         android:textCursorDrawable="@drawable/cursor_color"
         android:textSize="20sp"
-        app:layout_constraintBottom_toTopOf="@+id/signInPass"
+        app:layout_constraintBottom_toTopOf="@id/signInPass"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
+        app:layout_constraintTop_toBottomOf="@id/imageView"
         tools:visibility="visible" />
+
+    <TextView
+        android:id="@+id/forgottenPass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_regular"
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        app:layout_constraintEnd_toEndOf="@id/signInPass"
+        app:layout_constraintTop_toBottomOf="@id/signInPass"
+        android:text="Forgot your password?"
+        android:textColor="@color/colorPrimaryDark"
+        android:clickable="true"
+        />
+
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_gravity="center|bottom"
+        android:layout_marginTop="32dp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <FrameLayout
+        android:id="@+id/fragmentPlaceHolder"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:name="com.example.instantattendance.SignUpFragment"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

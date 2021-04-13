@@ -97,6 +97,37 @@ public class HomeActivity extends AppCompatActivity {
         sectionNames = new ArrayList<>();
         sectionCodeNames = new ArrayList<>();
         sectionsArrayList = new ArrayList<>();
+        //this is for testing
+        File testdir = new File(getFilesDir() + "/test/");
+        if(!testdir.exists()) {
+            testdir.mkdirs();
+        }
+        storeRef.child("/test").listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
+            @Override
+            public void onSuccess(ListResult result) {
+                for(StorageReference fileRef : result.getItems()) {
+                    // TODO: Download the file using its reference (fileRef)
+                    Log.d(TAG, "onSuccess: "+testdir+"/"+fileRef.getName());
+
+                    final File localFile = new File(testdir+"/", fileRef.getName());
+                    fileRef.getFile(localFile).addOnSuccessListener(new OnSuccessListener<FileDownloadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(FileDownloadTask.TaskSnapshot taskSnapshot) {
+                            Bitmap bitmap = BitmapFactory.decodeFile(localFile.getAbsolutePath());
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception exception) {
+                        }
+                    });
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(Exception exception) {
+                // Handle any errors
+            }
+        });
         for(int i = 0;i<s.size();i++){
             Log.d("Home",s.get(i).toString());
             String forignkey = s.get(i).toString();
@@ -107,6 +138,7 @@ public class HomeActivity extends AppCompatActivity {
 
             //get student reference pictures
             //gs://instantattenddb.appspot.com/Sections/11111/437100230.png
+
             storeRef.child("/Sections/"+s.get(i).toString()).listAll().addOnSuccessListener(new OnSuccessListener<ListResult>() {
                 @Override
                 public void onSuccess(ListResult result) {

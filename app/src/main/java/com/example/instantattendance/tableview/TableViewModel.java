@@ -45,6 +45,7 @@ public class TableViewModel {
             for (int j = 0; j < days.size(); j++) {
                 String d = days.get(j).substring(0,4)+days.get(j).substring(5,7)+days.get(j).substring(8,10);
                 Object text = " ";
+                if(!map.isEmpty()){
                 if(map.containsKey(d)){
                     if (map.get(d).contains(students.get(i))){
                         /*Log.d(TAG, "getCellListForSortingTest: "+"VOILAAAAAAAAAAAA"+d+students.get(i));*/
@@ -52,7 +53,7 @@ public class TableViewModel {
                     }else{
                         text = "0";
                     }
-                }
+                }}
                 // Create an id.
                 String id = j + "-" + i;
                 Cell cell;

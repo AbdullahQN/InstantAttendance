@@ -89,7 +89,7 @@ public class CameraActivity extends AppCompatActivity {
                 Preview preview = new Preview.Builder().build();
 
                 // Set up the capture use case to allow users to take photos
-                ImageCapture imgCap = new ImageCapture.Builder().setTargetRotation(Surface.ROTATION_0).setTargetResolution(new Size(600,800)).build();
+                ImageCapture imgCap = new ImageCapture.Builder().setTargetRotation(Surface.ROTATION_90).setTargetResolution(new Size(1920,1080)).build();
 
                 /*Date c = Calendar.getInstance().getTime();
                 System.out.println("Current time => " + c);

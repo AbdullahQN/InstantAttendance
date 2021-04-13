@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph">
-    <fragment
+    <!--<fragment
         android:id="@+id/FirstFragment"
         android:name="com.example.instantattendance.FirstFragment"
         android:label="@string/first_fragment_label"
@@ -22,5 +22,5 @@
         <action
             android:id="@+id/action_SecondFragment_to_FirstFragment"
             app:destination="@id/FirstFragment" />
-    </fragment>
+    </fragment>-->
 </navigation>

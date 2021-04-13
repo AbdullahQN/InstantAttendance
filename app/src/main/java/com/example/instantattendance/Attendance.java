@@ -75,47 +75,6 @@ public class Attendance extends AppCompatActivity {
 
         }
         initializeTableView(section);
-
-        //getSupportActionBar().setTitle(sectionNumber+" Attendance");
-
-
-        /*DataTable dataTable = findViewById(R.id.datatable);
-
-        DataTableHeader header = new DataTableHeader.Builder()
-                .item("ID" , 3)
-                .item("Sunday", 2)
-                .item("Tuesday", 2)
-                .item("Thursday", 2)
-                .item("friday",2)
-                .item("ttttt",2)
-                .build();
-        ArrayList<DataTableRow> rows = new ArrayList<>();
-        for(int i=0;i<200;i++){
-            Random r = new Random();
-            int random = r.nextInt(i+1);
-            int randomDiscount = r.nextInt(20);
-            DataTableRow row = new DataTableRow.Builder()
-                    .value("Product #" + i)
-                    .value(String.valueOf(random))
-                    .value(String.valueOf(random*1000).concat("$"))
-                    .value(String.valueOf(randomDiscount).concat("%"))
-                    .value("0")
-                    .value("1")
-                    .build();
-            rows.add(row);
-        }
-
-        //dataTable.setTypeface(typeface);
-        dataTable.setHeader(header);
-        dataTable.setRows(rows);
-        dataTable.inflate(this);*/
-
-
-
-
-
-
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -154,7 +113,7 @@ public class Attendance extends AppCompatActivity {
         int i = 0 ;
         while (!start.isAfter(end)) {
             if(dayNames.contains(start.getDayOfWeek().toString())){
-                //Log.d("TAG", "ColumnHeaderList: "+ start.getDayOfWeek());
+                Log.d("TAG", "ColumnHeaderList: "+ start.getDayOfWeek());
                 String title = start.toString()+"\n"+start.getDayOfWeek();
                 tableDays.add(title);
                 i++;

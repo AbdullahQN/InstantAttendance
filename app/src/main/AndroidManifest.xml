@@ -16,7 +16,7 @@
         <activity
             android:name=".AddCourse"
             android:label="@string/title_activity_add_course"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".Attendance"
             android:label="@string/title_activity_attendance"
