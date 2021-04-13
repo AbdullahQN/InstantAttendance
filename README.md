@@ -25,12 +25,14 @@ see more at: [Get data with Cloud Firestore](https://firebase.google.com/docs/fi
 
 | Interface | Objective | Progress |
 | --- | --- | --- |
-| MainActivity class | Loading user data | Ongoing |
-| HomeActivity class | Users main interface with the system | Ongoing |
+| MainActivity class | Loading user data | Concluded |
+| AddCourse class | creating new sections | Concluded |
+| HomeActivity class | Users main interface with the system | Concluded |
 | Attendance class | Spanning attendance sheet | Concluded |
 | TableViewModel class | Helper class for spanning sheet | Concluded |
 | CameraActivity class | Interface with device camera | Concluded |
 | PictureView class | Preview the taken picture | Concluded |
+| SignUpFragment class | Regestring and authenticating user with the project database | Concluded |
 | SignIn class | Authenticating user with the project database | Concluded |
 | CourseAdapter class | Helper class to propagate Section card in HomeActivity class | Concluded |
 | User class | Object-oriented class containing user data | Concluded |
@@ -76,14 +78,17 @@ Week 5:
 - [x] Taking attendance functionality.
 > The system now is cabable of syncing new attendance with our database.
 
+- [x] Users can create sections.
+> Creating new section functionnality through AddCourse class.
 
-Todo:
-- [ ] TensorFlowLight integration of MTCNN and Facenet in different scenarios:
+- [x] Users can now reset password
+> On login class if a user chose the option "Forgot my password" a password reset link will be sent to the user's regestered email address.
+> see more at: [Manage Users in Firebase](https://firebase.google.com/docs/auth/android/manage-users#send_a_password_reset_email).
 
+- [x] Faculty members can now sign up.
+> Through sign in screen Faculty can now choose to sign up.
 
-| ML | Solution 1 | Solution 2 |
-| --- | --- | --- |
-| MTCNN | On device integration | Cloud integration |
-| FaceNet | On device integration | On device integration |
+Week 6:
+- [x] Testing.
 
 
