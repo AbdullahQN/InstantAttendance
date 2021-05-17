@@ -133,7 +133,7 @@ public class CameraActivity extends AppCompatActivity {
                                 Log.d(TAG, "Photo capture succeeded: "+savedUri.toString());
                                 String msg = "Photo capture succeeded ";
                                 previewTakenPic();
-                                Toast.makeText(getApplicationContext(), msg,Toast.LENGTH_LONG).show();
+                                Toast.makeText(getApplicationContext(), msg,Toast.LENGTH_SHORT).show();
                             }
 
                             @Override

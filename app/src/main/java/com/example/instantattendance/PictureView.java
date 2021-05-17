@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
@@ -77,7 +78,9 @@ public class PictureView extends AppCompatActivity{
     private ImageButton backButton,doneButton ;
     int detected,recognized,percentage;
     List<String> recognizedStudents;
-    private File fi;
+    private File fi, tfi;
+    String filePath;
+    final boolean test = true;
     ProgressDialog pd;
     File RefImagesfolder;
     ArrayList<File> filesList;
@@ -122,7 +125,12 @@ public class PictureView extends AppCompatActivity{
         text_prev = (TextView) findViewById(R.id.txt_preview);
         //txt_preview
         time =(long) i.getSerializableExtra("time");
-        final String filePath = getFilesDir() + "/" + time + ".jpg";
+        if(test){
+            Toast.makeText(getApplicationContext(), "Running Test the taken picture was replaced with test 5",Toast.LENGTH_LONG).show();
+            filePath = getFilesDir() + "/test/t5.png";
+        }else{
+            filePath = getFilesDir() + "/" + time + ".jpg";
+        }
         Log.d(TAG, "onCreate: "+filePath);
         fi = new File(filePath);
         im = (ImageView) findViewById(R.id.image_preview);
@@ -183,6 +191,7 @@ public class PictureView extends AppCompatActivity{
                 })
                 .into(im);
 
+
     }
 
     private void inference(long time) {
@@ -229,7 +238,7 @@ public class PictureView extends AppCompatActivity{
         final String filePath = getFilesDir() + "/" + time + ".jpg";
         Log.d(TAG, "inference: "+filePath);
         fi = new File(filePath);
-        final String testfilePath = getFilesDir() + "/test/t30.png";
+        final String testfilePath = getFilesDir() + "/test/t5.png";
         Log.d(TAG, "inference: "+testfilePath);
         File fitest = new File(testfilePath);
 
