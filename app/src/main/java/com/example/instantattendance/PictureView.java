@@ -17,6 +17,7 @@ import android.media.ImageReader;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
@@ -80,7 +81,7 @@ public class PictureView extends AppCompatActivity{
     List<String> recognizedStudents;
     private File fi, tfi;
     String filePath;
-    final boolean test = true;
+    final boolean test = false;
     ProgressDialog pd;
     File RefImagesfolder;
     ArrayList<File> filesList;
@@ -221,7 +222,6 @@ public class PictureView extends AppCompatActivity{
         });
         pd.show(); // Display Progress Dialog
 
-        //
         List<Thread> threads = new ArrayList<>();
         File RefImagesfolder = new File(getFilesDir()+"/Sections/"+section.getSection_ID()+"/");
         ArrayList<File> filesList = new ArrayList<>(Arrays.asList(RefImagesfolder.listFiles()));
@@ -235,16 +235,18 @@ public class PictureView extends AppCompatActivity{
         Log.d(TAG, "STARTED: time 0");
         float startTime = System.nanoTime();
         FaceDetector detector = FaceDetection.getClient(opts);
-        final String filePath = getFilesDir() + "/" + time + ".jpg";
-        Log.d(TAG, "inference: "+filePath);
-        fi = new File(filePath);
-        final String testfilePath = getFilesDir() + "/test/t5.png";
-        Log.d(TAG, "inference: "+testfilePath);
-        File fitest = new File(testfilePath);
 
-        // testing
+        if(test){
+            final String filePath = getFilesDir() + "/test/t5.png";
+            Log.d(TAG, "inference: "+filePath);
+            fi = new File(filePath);
+        }else{
+            final String filePath = getFilesDir() + "/" + time + ".jpg";
+            Log.d(TAG, "inference: "+filePath);
+            fi = new File(filePath);
+        }
 
-        Bitmap m =BitmapFactory.decodeFile(fitest.getAbsolutePath());
+        Bitmap m =BitmapFactory.decodeFile(fi.getAbsolutePath());
         InputImage image = InputImage.fromByteArray(bitmapToNV21(m),
                 /* image width */ m.getWidth(),
                 /* image height */ m.getHeight(),
@@ -258,54 +260,55 @@ public class PictureView extends AppCompatActivity{
                                 new OnSuccessListener<List<Face>>() {
                                     @Override
                                     public void onSuccess(List<Face> faces) {
-                                        int debugrotate = 0;
-                                        float endTime = System.nanoTime();
-                                        float Duration = (endTime - startTime);
-                                        //converting time into seconds didnt work because its too small!!
-                                        float convert= ((endTime - startTime)/1000000000);
-                                        //long convert = TimeUnit.SECONDS.convert(Duration, TimeUnit.NANOSECONDS);
-                                        Log.d(TAG, "Ended: time taken by detection = " + convert +" Seconds");
-                                        Log.d(TAG, "Ended: time taken by detection = " + Duration+" Nano Seconds");
+                                        if(faces.size()!=0){
+                                            int debugrotate = 0;
+                                            float endTime = System.nanoTime();
+                                            float Duration = (endTime - startTime);
+                                            //converting time into seconds didnt work because its too small!!
+                                            float convert= ((endTime - startTime)/1000000000);
+                                            //long convert = TimeUnit.SECONDS.convert(Duration, TimeUnit.NANOSECONDS);
+                                            Log.d(TAG, "Ended: time taken by detection = " + convert +" Seconds");
+                                            Log.d(TAG, "Ended: time taken by detection = " + Duration+" Nano Seconds");
 
-                                        detected=faces.size();
-                                        for(Face x : faces){
-                                            int width = x.getBoundingBox().width();
-                                            int height = x.getBoundingBox().height();
-                                            Bitmap ret = Bitmap.createBitmap(width,height ,m.getConfig());
-                                            Canvas canvas = new Canvas(ret);
-                                            canvas.drawBitmap(m, -x.getBoundingBox().left, -x.getBoundingBox().top, null);
-                                            //Log.d(TAG, "onSuccess: "+RefImagesfolder);
-                                            switch (debugrotate){
-                                                case 0:{
-                                                    im.setVisibility(View.INVISIBLE);
-                                                    face_rec0.setImageBitmap(ret);
-                                                    break;}
-                                                case 1:face_rec1.setImageBitmap(ret);
-                                                    break;
-                                                case 2:face_rec2.setImageBitmap(ret);
-                                                    break;
-                                                case 3:face_rec3.setImageBitmap(ret);
-                                                    break;
-                                                case 4:face_rec4.setImageBitmap(ret);
-                                                    break;
-                                                default:face_rec5.setImageBitmap(ret);
-                                            }
-                                            //
-                                            int finalDebugrotate = debugrotate;
-                                            Thread a = new Thread() {
-                                                @Override
-                                                public void run() {
+                                            detected=faces.size();
+                                            for(Face x : faces){
+                                                int width = x.getBoundingBox().width();
+                                                int height = x.getBoundingBox().height();
+                                                Bitmap ret = Bitmap.createBitmap(width,height ,m.getConfig());
+                                                Canvas canvas = new Canvas(ret);
+                                                canvas.drawBitmap(m, -x.getBoundingBox().left, -x.getBoundingBox().top, null);
+                                                //Log.d(TAG, "onSuccess: "+RefImagesfolder);
+                                                switch (debugrotate){
+                                                    case 0:{
+                                                        im.setVisibility(View.INVISIBLE);
+                                                        face_rec0.setImageBitmap(ret);
+                                                        break;}
+                                                    case 1:face_rec1.setImageBitmap(ret);
+                                                        break;
+                                                    case 2:face_rec2.setImageBitmap(ret);
+                                                        break;
+                                                    case 3:face_rec3.setImageBitmap(ret);
+                                                        break;
+                                                    case 4:face_rec4.setImageBitmap(ret);
+                                                        break;
+                                                    default:face_rec5.setImageBitmap(ret);
+                                                }
+                                                //
+                                                int finalDebugrotate = debugrotate;
+                                                Thread a = new Thread() {
+                                                    @Override
+                                                    public void run() {
 
-                                                    try {
-                                                        // facenet code runs in a thread
-                                                        runOnUiThread(new Runnable() {
-                                                            @Override
-                                                            public void run() {
-                                                                //
-                                                                if(!filesList.isEmpty()){
-                                                                    for(File f: filesList){
-                                                                        Bitmap m = BitmapFactory.decodeFile(f.getAbsolutePath());
-                                                                        float _score = facenetmodel.compare(ret,m);
+                                                        try {
+                                                            // facenet code runs in a thread
+                                                            runOnUiThread(new Runnable() {
+                                                                @Override
+                                                                public void run() {
+                                                                    //
+                                                                    if(!filesList.isEmpty()){
+                                                                        for(File f: filesList){
+                                                                            Bitmap m = BitmapFactory.decodeFile(f.getAbsolutePath());
+                                                                            float _score = facenetmodel.compare(ret,m);
                                                                        /* float[][] embed =facenetmodel.prepros(ret);
                                                                         float[][] embed2 =facenetmodel.prepros(m);
                                                                         //float[][] embed3 =new float[2][512];
@@ -325,69 +328,75 @@ public class PictureView extends AppCompatActivity{
                                                                         //float _score = facenetmodel.evaluate(embed,embed2);
                                                                         Log.d(TAG, "run: "+same);*/
 
-                                                                        Boolean isSame = _score > MobileFaceNet.THRESHOLD;//0.96
-                                                                        if (isSame) {
-                                                                            recognized++;
-                                                                            if(recognized == faces.size()){
-                                                                                pd.setMessage(" ");
-                                                                                pd.setTitle("Finished taking the attendance");
-                                                                                pd.setProgress(100);
+                                                                            Boolean isSame = _score > MobileFaceNet.THRESHOLD;//0.96
+                                                                            if (isSame) {
+                                                                                recognized++;
+                                                                                if(recognized == faces.size()){
+                                                                                    pd.setMessage(" ");
+                                                                                    pd.setTitle("Finished taking the attendance");
+                                                                                    pd.setProgress(100);
 
 
+                                                                                }
+                                                                                pd.setProgress((recognized/faces.size())*100);
+                                                                                sumScore +=_score;
+                                                                                average = sumScore/recognized;
+                                                                                float endTime2 = System.nanoTime();
+                                                                                float convert2= ((endTime2 - endTime)/1000000000);
+                                                                                text_prev.setText("Student Detected:  "+detected+"\n"+"Student Recognized: "+recognized+"\n"+"Time Detecting: "+ convert + " Seconds\n"+"Time Recognition: "+convert2+" Seconds\n"+"Total Time: "+(convert+convert2)+" Seconds\n");
+                                                                                filesList.remove(f);
+                                                                                Log.d(TAG, "Student: "+f.getName().toString().substring(0,9)+" Has been recognized with score " + _score+"new Average: "+average);
+                                                                                recognizedStudents.add(f.getName().toString().substring(0,9));
+                                                                                switch (finalDebugrotate){
+                                                                                    case 0:{
+                                                                                        text_rec0.setText(f.getName().toString().substring(0,9));
+                                                                                        break;}
+                                                                                    case 1:text_rec1.setText(f.getName().toString().substring(0,9));
+                                                                                        break;
+                                                                                    case 2:text_rec2.setText(f.getName().toString().substring(0,9));
+                                                                                        break;
+                                                                                    case 3:text_rec3.setText(f.getName().toString().substring(0,9));
+                                                                                        break;
+                                                                                    case 4:text_rec4.setText(f.getName().toString().substring(0,9));
+                                                                                        break;
+                                                                                    default:text_rec5.setText(f.getName().toString().substring(0,9));
+                                                                                }
+                                                                                break;
+                                                                            } else {
+                                                                                Log.d(TAG, "Student is not recognized as "+f.getName().toString().substring(0,9)+" with score " + _score);
                                                                             }
-                                                                            pd.setProgress((recognized/faces.size())*100);
-                                                                            sumScore +=_score;
-                                                                            average = sumScore/recognized;
-                                                                            float endTime2 = System.nanoTime();
-                                                                            float convert2= ((endTime2 - endTime)/1000000000);
-                                                                            text_prev.setText("Student Detected:  "+detected+"\n"+"Student Recognized: "+recognized+"\n"+"Time Detecting: "+ convert + " Seconds\n"+"Time Recognition: "+convert2+" Seconds\n"+"Total Time: "+(convert+convert2)+" Seconds\n");
-                                                                            filesList.remove(f);
-                                                                            Log.d(TAG, "Student: "+f.getName().toString().substring(0,9)+" Has been recognized with score " + _score+"new Average: "+average);
-                                                                            recognizedStudents.add(f.getName().toString().substring(0,9));
-                                                                            switch (finalDebugrotate){
-                                                                                case 0:{
-                                                                                    text_rec0.setText(f.getName().toString().substring(0,9));
-                                                                                    break;}
-                                                                                case 1:text_rec1.setText(f.getName().toString().substring(0,9));
-                                                                                    break;
-                                                                                case 2:text_rec2.setText(f.getName().toString().substring(0,9));
-                                                                                    break;
-                                                                                case 3:text_rec3.setText(f.getName().toString().substring(0,9));
-                                                                                    break;
-                                                                                case 4:text_rec4.setText(f.getName().toString().substring(0,9));
-                                                                                    break;
-                                                                                default:text_rec5.setText(f.getName().toString().substring(0,9));
-                                                                            }
-                                                                            break;
-                                                                        } else {
-                                                                            Log.d(TAG, "Student is not recognized as "+f.getName().toString().substring(0,9)+" with score " + _score);
                                                                         }
+
+                                                                    }else{
+                                                                        Log.d(TAG, "run: List is empty");
+                                                                        //
+
                                                                     }
-
-                                                                }else{
-                                                                    Log.d(TAG, "run: List is empty");
-                                                                    //
-
                                                                 }
-                                                            }
-                                                        });
-                                                    } catch (final Exception ex) {
-                                                        Log.i("---","Exception in thread");
+                                                            });
+                                                        } catch (final Exception ex) {
+                                                            Log.i("---","Exception in thread");
+                                                        }
+
+
                                                     }
-
-
-                                                }
-                                            };
-                                            a.start();
+                                                };
+                                                a.start();
                                             /*while(a.isAlive()){
 
                                             }*/
-                                            threads.add(a);
-                                            //pd.setProgress((debugrotate/faces.size())*100);
-                                            debugrotate++;
-                                            Log.d(TAG, "onSuccess: "+x.getBoundingBox()+" "+x.getBoundingBox().top+" "+x.getBoundingBox().bottom+" "+x.getBoundingBox().right+" "+x.getBoundingBox().left);
+                                                threads.add(a);
+                                                //pd.setProgress((debugrotate/faces.size())*100);
+                                                debugrotate++;
+                                                Log.d(TAG, "onSuccess: "+x.getBoundingBox()+" "+x.getBoundingBox().top+" "+x.getBoundingBox().bottom+" "+x.getBoundingBox().right+" "+x.getBoundingBox().left);
 
+                                            }
                                         }
+                                        else{
+                                            pd.dismiss();
+                                            Toast.makeText(getApplicationContext(), "No faces detected please try again",Toast.LENGTH_LONG).show();
+                                        }
+
                                     }
 
                                 })

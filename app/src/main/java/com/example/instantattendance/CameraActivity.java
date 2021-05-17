@@ -23,6 +23,7 @@ import androidx.lifecycle.LifecycleOwner;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.SurfaceTexture;
 import android.media.MediaScannerConnection;
 import android.net.ConnectivityManager;
@@ -33,6 +34,7 @@ import android.os.Environment;
 import android.util.Log;
 import android.util.Rational;
 import android.util.Size;
+import android.view.Display;
 import android.view.OrientationEventListener;
 import android.view.Surface;
 import android.view.View;
@@ -69,6 +71,11 @@ public class CameraActivity extends AppCompatActivity {
     private final String TAG= "CameraAct";
     long time;
 
+
+
+
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -98,6 +105,9 @@ public class CameraActivity extends AppCompatActivity {
                 String formattedDate = df.format(c);*/
                 //final String fi = getFilesDir() + "/" + formattedDate + ".jpg";
 
+                if(getResources().getConfiguration().orientation== Configuration.ORIENTATION_LANDSCAPE){
+                    Toast.makeText(getApplicationContext(), "this is the correct orientation",Toast.LENGTH_LONG).show();
+                }
 
                 // Choose the camera by requiring a lens facing
                 CameraSelector cameraSelector = new CameraSelector.Builder()
