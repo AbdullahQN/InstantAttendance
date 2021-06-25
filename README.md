@@ -1,6 +1,6 @@
 # InstantAttendance
 Design and implementation of attendance system using machine learning.
-Paper :
+[Report](https://github.com/AbdullahQN/InstantAttendance/blob/master/Graduation%20Project%20Report%202%20Edited.pdf).
 
 
 
