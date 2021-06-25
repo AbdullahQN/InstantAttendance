@@ -1,7 +1,14 @@
 # InstantAttendance
 Design and implementation of attendance system using machine learning.
+Paper :
 
 
+
+
+
+
+
+## Weekly Activities:
 WEEK 1:
 - [x] Android Project.
 > The project members have decided to continue the project implementation on mobile to be codded on Java on Android Platform for the unmatched Documentation and Open Source Resources on any other platform and programming language.
